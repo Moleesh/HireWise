@@ -25,6 +25,8 @@ jobs:
       run: npm run typecheck
     - name: Build project
       run: npm run build
+    - name: Remove symlinks and hard links
+      run: find dist -type l -delete
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
