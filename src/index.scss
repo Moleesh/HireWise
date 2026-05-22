@@ -1,0 +1,12 @@
+/**
+ * @format
+ * @fileoverview Main stylesheet entry point. Imports theme variables, base styles, animations, and Tailwind directives.
+ */
+
+@use './_styles/themes' as themes;
+@use './_styles/base' as base;
+@use './_styles/animations' as animations;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
