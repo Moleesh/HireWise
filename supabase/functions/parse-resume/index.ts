@@ -1,151 +1,163 @@
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+/** @format */
+
+import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
+
+/**
+ * parse-resume
+ *
+ * Receives extracted text from a resume (PDF/DOCX/TXT) — the client does file
+ * extraction with pdfjs-dist / mammoth before calling this. Uses Lovable AI
+ * Gateway with tool calling to extract structured candidate data. Falls back to
+ * heuristic regex when the key is missing or AI errors.
+ */
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Client-Info, Apikey",
+	'Access-Control-Allow-Origin': '*',
+	'Access-Control-Allow-Methods': 'POST, OPTIONS',
+	'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Client-Info, Apikey',
 };
 
-const COMMON_SKILLS = [
-  'javascript', 'typescript', 'react', 'angular', 'vue', 'vue.js', 'node', 'node.js',
-  'python', 'java', 'c++', 'c#', 'csharp', 'go', 'golang', 'rust', 'ruby', 'php',
-  'swift', 'kotlin', 'scala', 'perl', 'r', 'matlab', 'dart',
-  'aws', 'amazon web services', 'azure', 'gcp', 'google cloud',
-  'docker', 'kubernetes', 'k8s', 'terraform', 'ansible', 'jenkins', 'ci/cd',
-  'sql', 'mysql', 'postgresql', 'postgres', 'mongodb', 'mongo', 'redis',
-  'elasticsearch', 'dynamodb', 'cassandra', 'couchdb',
-  'graphql', 'rest', 'rest api', 'api', 'microservices',
-  'git', 'github', 'gitlab', 'bitbucket',
-  'linux', 'unix', 'bash', 'shell scripting',
-  'agile', 'scrum', 'kanban', 'jira',
-  'html', 'css', 'sass', 'less', 'tailwind', 'bootstrap',
-  'figma', 'sketch', 'adobe xd', 'photoshop', 'illustrator',
-  'machine learning', 'ml', 'deep learning', 'dl', 'ai', 'artificial intelligence',
-  'tensorflow', 'pytorch', 'keras', 'nlp', 'natural language processing',
-  'data science', 'data analysis', 'pandas', 'numpy', 'scipy',
-  'project management', 'leadership', 'communication', 'problem solving',
-  'selenium', 'cypress', 'jest', 'mocha', 'testing',
-  'next.js', 'nextjs', 'nuxt', 'svelte', 'sveltekit',
-  'express', 'express.js', 'fastapi', 'flask', 'django', 'spring', 'spring boot',
-  'react native', 'flutter', 'xamarin', 'ios', 'android',
-  'tableau', 'power bi', 'looker', 'snowflake', 'bigquery', 'spark', 'hadoop',
-  'oauth', 'jwt', 'security', 'cybersecurity', 'penetration testing',
-  'devops', 'sre', 'site reliability', 'monitoring', 'logging',
-];
+const AI_URL = 'https://ai.gateway.lovable.dev/v1/chat/completions';
+const MODEL = 'google/gemini-3-flash-preview';
 
 interface ParseRequest {
-  text: string;
-  file_name?: string;
+	text: string;
+	file_name?: string;
 }
 
+const fallback = (text: string, file_name?: string) => {
+	let candidate_name = '';
+	const nameMatch =
+		text.match(/(?:name|nom)\s*[:-]\s*([^\n]+)/i) ?? text.match(/^([A-Z][a-z]+ [A-Z][a-z]+)/m);
+	if (nameMatch) candidate_name = nameMatch[1].trim();
+	if (!candidate_name && file_name) {
+		candidate_name = file_name.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' ');
+	}
+	const emailMatch = text.match(/[\w.-]+@[\w.-]+\.\w+/);
+	const candidate_email = emailMatch?.[0] ?? '';
+	const expMatch = text.match(/(\d+)\+?\s*years?\s*(?:of\s*)?(?:experience|exp)/i);
+	const experience_years = expMatch ? parseInt(expMatch[1]) : 0;
+	return {
+		candidate_name,
+		candidate_email,
+		skills: [] as string[],
+		experience_years,
+		education: [] as { degree: string; institution: string; year: string }[],
+		work_history: [] as {
+			title: string;
+			company: string;
+			duration: string;
+			description: string;
+		}[],
+	};
+};
+
+const callAi = async (text: string, fileName: string | undefined) => {
+	const key = Deno.env.get('LOVABLE_API_KEY');
+	if (!key) throw new Error('no key');
+	const tool = {
+		type: 'function',
+		function: {
+			name: 'extract_resume',
+			description: 'Extract structured candidate data from a resume.',
+			parameters: {
+				type: 'object',
+				properties: {
+					candidate_name: { type: 'string' },
+					candidate_email: { type: 'string' },
+					skills: { type: 'array', items: { type: 'string' } },
+					experience_years: { type: 'number' },
+					education: {
+						type: 'array',
+						items: {
+							type: 'object',
+							properties: {
+								degree: { type: 'string' },
+								institution: { type: 'string' },
+								year: { type: 'string' },
+							},
+							required: ['degree', 'institution', 'year'],
+							additionalProperties: false,
+						},
+					},
+					work_history: {
+						type: 'array',
+						items: {
+							type: 'object',
+							properties: {
+								title: { type: 'string' },
+								company: { type: 'string' },
+								duration: { type: 'string' },
+								description: { type: 'string' },
+							},
+							required: ['title', 'company', 'duration', 'description'],
+							additionalProperties: false,
+						},
+					},
+				},
+				required: [
+					'candidate_name',
+					'candidate_email',
+					'skills',
+					'experience_years',
+					'education',
+					'work_history',
+				],
+				additionalProperties: false,
+			},
+		},
+	};
+	const res = await fetch(AI_URL, {
+		method: 'POST',
+		headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			model: MODEL,
+			messages: [
+				{
+					role: 'system',
+					content:
+						'You parse resumes into structured data. Be precise. Keep skill names concise (1-3 words). Use empty strings rather than null. If the resume is unreadable, return safe defaults.',
+				},
+				{
+					role: 'user',
+					content: `Filename: ${fileName ?? '(none)'}\n\nResume text:\n${text.slice(0, 18000)}`,
+				},
+			],
+			tools: [tool],
+			tool_choice: { type: 'function', function: { name: 'extract_resume' } },
+		}),
+	});
+	if (!res.ok) throw new Error(`ai_${res.status}`);
+	const data = await res.json();
+	const call = data.choices?.[0]?.message?.tool_calls?.[0];
+	if (!call) throw new Error('no tool call');
+	return JSON.parse(call.function.arguments);
+};
+
 Deno.serve(async (req: Request) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { status: 200, headers: corsHeaders });
-  }
-
-  try {
-    const { text, file_name }: ParseRequest = await req.json();
-
-    if (!text) {
-      return new Response(
-        JSON.stringify({ error: "No text provided" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    const lowerText = text.toLowerCase();
-
-    // Extract skills
-    const foundSkills = COMMON_SKILLS.filter(skill => {
-      const regex = new RegExp(`\\b${skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
-      return regex.test(lowerText);
-    });
-
-    // Extract name (look for common patterns)
-    let candidateName = '';
-    const namePatterns = [
-      /(?:name|nom)\s*[:\-]\s*([^\n]+)/i,
-      /^([A-Z][a-z]+ [A-Z][a-z]+)/m,
-    ];
-    for (const pattern of namePatterns) {
-      const match = text.match(pattern);
-      if (match) {
-        candidateName = match[1].trim();
-        break;
-      }
-    }
-    if (!candidateName && file_name) {
-      candidateName = file_name.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' ');
-    }
-
-    // Extract email
-    const emailMatch = text.match(/[\w.-]+@[\w.-]+\.\w+/);
-    const candidateEmail = emailMatch ? emailMatch[0] : '';
-
-    // Extract experience years
-    let experienceYears = 0;
-    const expPatterns = [
-      /(\d+)\+?\s*years?\s*(?:of\s*)?(?:experience|exp)/i,
-      /(?:experience|exp)\s*[:\-]?\s*(\d+)\+?\s*years?/i,
-    ];
-    for (const pattern of expPatterns) {
-      const match = text.match(pattern);
-      if (match) {
-        experienceYears = parseInt(match[1]);
-        break;
-      }
-    }
-
-    // Extract education
-    const educationKeywords = ['bachelor', 'master', 'phd', 'ph.d', 'b.s', 'm.s', 'b.a', 'm.a', 'mba', 'b.tech', 'm.tech', 'degree', 'diploma', 'certificate'];
-    const education: { degree: string; institution: string; year: string }[] = [];
-    const lines = text.split('\n');
-    for (const line of lines) {
-      const lower = line.toLowerCase();
-      if (educationKeywords.some(k => lower.includes(k))) {
-        education.push({
-          degree: line.trim().substring(0, 100),
-          institution: '',
-          year: (line.match(/20\d{2}|19\d{2}/) || [''])[0],
-        });
-      }
-    }
-
-    // Extract work history
-    const workHistory: { title: string; company: string; duration: string; description: string }[] = [];
-    const jobTitlePatterns = [
-      /(?:senior|junior|lead|principal|staff|chief|head)\s+(?:software|frontend|backend|fullstack|full-stack|data|ml|devops|cloud|product|project|engineering|design|marketing|sales)\s+(?:engineer|developer|designer|manager|director|analyst|scientist|architect)/gi,
-      /(?:software|frontend|backend|fullstack|full-stack|data|ml|devops|cloud|product|project)\s+(?:engineer|developer|designer|manager|director|analyst|scientist|architect)/gi,
-    ];
-    for (const pattern of jobTitlePatterns) {
-      const matches = text.matchAll(pattern);
-      for (const match of matches) {
-        workHistory.push({
-          title: match[0].trim(),
-          company: '',
-          duration: '',
-          description: '',
-        });
-      }
-    }
-
-    const parsedData = {
-      candidate_name: candidateName,
-      candidate_email: candidateEmail,
-      skills: [...new Set(foundSkills)],
-      experience_years: experienceYears,
-      education,
-      work_history: workHistory.slice(0, 10),
-    };
-
-    return new Response(
-      JSON.stringify(parsedData),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
-  } catch (error) {
-    return new Response(
-      JSON.stringify({ error: error.message || "Internal server error" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
-  }
+	if (req.method === 'OPTIONS') return new Response(null, { status: 200, headers: corsHeaders });
+	try {
+		const { text, file_name }: ParseRequest = await req.json();
+		if (!text) {
+			return new Response(JSON.stringify({ error: 'No text provided' }), {
+				status: 400,
+				headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+			});
+		}
+		let parsed;
+		try {
+			parsed = await callAi(text, file_name);
+		} catch {
+			parsed = fallback(text, file_name);
+		}
+		return new Response(JSON.stringify(parsed), {
+			headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+		});
+	} catch (error) {
+		const message = error instanceof Error ? error.message : String(error);
+		return new Response(JSON.stringify({ error: message || 'parse-resume failed' }), {
+			status: 500,
+			headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+		});
+	}
 });

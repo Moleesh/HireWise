@@ -5,6 +5,6 @@
  */
 
 export const formatDate = (dateStr: string | null): string => {
-  if (!dateStr) return 'Never';
-  return new Date(dateStr).toLocaleDateString();
+	if (!dateStr) return 'Never';
+	return new Date(dateStr).toLocaleDateString();
 };

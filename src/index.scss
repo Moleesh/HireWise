@@ -7,6 +7,5 @@
 @use './_styles/base' as base;
 @use './_styles/animations' as animations;
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config '../tailwind.config.js';
+@import 'tailwindcss';
