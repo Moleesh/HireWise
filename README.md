@@ -1,3 +1,5 @@
+<!-- @format -->
+
 # 💼 HireWise
 
 [![Build and Deploy to GitHub Pages](https://github.com/Moleesh/HireWise/actions/workflows/main.yml/badge.svg)](https://github.com/Moleesh/HireWise/actions/workflows/main.yml)
@@ -13,12 +15,12 @@ A next-generation recruiting and talent management platform that revolutionizes 
 
 ## 🖥️ Language Composition
 
-| Language    | Percentage |
-|-------------|-----------|
-| TypeScript  | 82.1%     |
-| SCSS        | 11.5%     |
-| PLpgSQL     | 5.5%      |
-| Other       | 0.9%      |
+| Language   | Percentage |
+| ---------- | ---------- |
+| TypeScript | 82.1%      |
+| SCSS       | 11.5%      |
+| PLpgSQL    | 5.5%       |
+| Other      | 0.9%       |
 
 ---
 
@@ -41,21 +43,22 @@ A next-generation recruiting and talent management platform that revolutionizes 
 
 ## 🎯 Features
 
-| Feature | Description |
-|---------|-------------|
-| 📋 **Job Management** | Create, edit, and manage job postings with rich descriptions and custom requirements |
-| 👤 **Candidate Tracking** | Maintain detailed profiles and track every stage of the application lifecycle |
-| 🤖 **Smart Ranking** | AI-driven candidate ranking to find the perfect fit for your positions |
-| 📊 **Analytics Dashboard** | Key hiring metrics, pipeline overview, and performance analytics |
-| 👨‍💼 **User Management** | Team administration with granular permission controls |
-| 🌓 **Theme Switcher** | Elegant light and dark mode support |
-| 🔒 **Secure Auth** | Industry-standard authentication with session management |
+| Feature                    | Description                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------ |
+| 📋 **Job Management**      | Create, edit, and manage job postings with rich descriptions and custom requirements |
+| 👤 **Candidate Tracking**  | Maintain detailed profiles and track every stage of the application lifecycle        |
+| 🤖 **Smart Ranking**       | AI-driven candidate ranking to find the perfect fit for your positions               |
+| 📊 **Analytics Dashboard** | Key hiring metrics, pipeline overview, and performance analytics                     |
+| 👨‍💼 **User Management**     | Team administration with granular permission controls                                |
+| 🌓 **Theme Switcher**      | Elegant light and dark mode support                                                  |
+| 🔒 **Secure Auth**         | Industry-standard authentication with session management                             |
 
 ---
 
 ## 🛠️ Technology Stack
 
 ### Frontend
+
 - **React** 19 (UI)
 - **TypeScript** 6 (82.1%) — type-safe scripting
 - **Vite** 8 — dev server & build tool
@@ -63,11 +66,13 @@ A next-generation recruiting and talent management platform that revolutionizes 
 - **Lucide React** 1 — icon library
 
 ### Backend & Database
+
 - **Supabase** — hosted PostgreSQL+API
 - **PLpgSQL** (5.5%) — PostgreSQL functions/stored procedures
 - **Supabase Auth** — authentication
 
 ### Tools & Testing
+
 - **Vitest** 4 — unit testing
 - **Prettier** 3, **ESLint** 10 — code quality
 - **GitHub Actions** — CI/CD
@@ -90,6 +95,7 @@ A next-generation recruiting and talent management platform that revolutionizes 
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 ```
 Node.js v16+ | npm or yarn
 ```
@@ -151,7 +157,9 @@ src/
 ## 🔄 CI/CD & Deployment
 
 ### Automated Workflow
+
 ✅ Every push to `main` automatically:
+
 1. Installs dependencies
 2. Runs TypeScript checks
 3. Builds the application
@@ -203,7 +211,7 @@ This project is **private** and proprietary.
 
 ---
 
-<div align="center">
+<div style="text-align: center;">
 
 **[⬆ back to top](#-hirewise)**
 

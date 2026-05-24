@@ -1,3 +1,5 @@
+<!-- @format -->
+
 # Supabase
 
 This directory contains everything needed to provision and deploy the

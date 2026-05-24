@@ -16,6 +16,17 @@ export default defineConfig({
 			},
 		},
 	},
+	build: {
+		chunkSizeWarningLimit: 1000,
+		rollupOptions: {
+			output: {
+				manualChunks: (id) => {
+					if (id.includes('pdfjs-dist')) return 'pdf';
+					if (id.includes('mammoth')) return 'mammoth';
+				},
+			},
+		},
+	},
 	test: {
 		globals: true,
 		environment: 'jsdom',

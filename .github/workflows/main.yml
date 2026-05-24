@@ -1,55 +1,57 @@
+# @format
+
 name: Build and Deploy to GitHub Pages
 on:
-  push:
-    branches: [ main ]
+    push:
+        branches: [main]
 env:
-  BUN_VERSION: '1'
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    BUN_VERSION: '1'
+    FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  build:
-    name: Build Application
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-      with:
-        fetch-depth: 0
-    - name: Setup Bun
-      uses: oven-sh/setup-bun@v2
-      with:
-        bun-version: ${{ env.BUN_VERSION }}
-    - name: Install dependencies
-      run: bun install
-    - name: Run type check
-      run: bun run typecheck
-    - name: Build project
-      run: bun run build
-    - name: Upload to Pages
-      uses: actions/upload-pages-artifact@v5
-      with:
-        path: dist/
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v5
-      with:
-        name: github-pages
-    - name: Setup Pages
-      uses: actions/configure-pages@v5
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v5
+    build:
+        name: Build Application
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v5
+              with:
+                  fetch-depth: 0
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: ${{ env.BUN_VERSION }}
+            - name: Install dependencies
+              run: bun install
+            - name: Run type check
+              run: bun run typecheck
+            - name: Build project
+              run: bun run build
+            - name: Upload to Pages
+              uses: actions/upload-pages-artifact@v5
+              with:
+                  path: dist/
+    deploy:
+        name: Deploy to GitHub Pages
+        needs: build
+        runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/main'
+
+        permissions:
+            contents: read
+            pages: write
+            id-token: write
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        steps:
+            - name: Download artifact
+              uses: actions/download-artifact@v5
+              with:
+                  name: github-pages
+            - name: Setup Pages
+              uses: actions/configure-pages@v5
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v5

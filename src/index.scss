@@ -6,6 +6,6 @@
 @use './_styles/themes' as themes;
 @use './_styles/base' as base;
 @use './_styles/animations' as animations;
+@use 'tailwindcss';
 
 @config '../tailwind.config.js';
-@import 'tailwindcss';
