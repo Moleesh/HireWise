@@ -8,8 +8,8 @@ import { getRankBadge } from './_private/helpers';
 type LeaderboardTableProps = {
 	rankings: Ranking[];
 	candidates: Candidate[];
-	sortBy: 'overallscore' | 'skillsscore' | 'experiencescore';
-	onSortChange: (sortBy: 'overallscore' | 'skillsscore' | 'experiencescore') => void;
+	sortBy: 'overallScore' | 'skillsScore' | 'experienceScore';
+	onSortChange: (sortBy: 'overallScore' | 'skillsScore' | 'experienceScore') => void;
 	onSelect: (ranking: Ranking) => void;
 };
 
@@ -27,7 +27,7 @@ const LeaderboardTable = ({
 		<div className="space-y-3">
 			<div className="flex items-center gap-2 mb-2">
 				<span className="text-xs text-[var(--text-quaternary)]">Sort by:</span>
-				{(['overallscore', 'skillsscore', 'experiencescore'] as const).map((field) => (
+				{(['overallScore', 'skillsScore', 'experienceScore'] as const).map((field) => (
 					<button
 						key={field}
 						onClick={() => onSortChange(field)}
@@ -37,9 +37,9 @@ const LeaderboardTable = ({
 								: 'text-[var(--text-quaternary)] hover:text-[var(--text-secondary)]'
 						}`}
 					>
-						{field === 'overallscore'
+						{field === 'overallScore'
 							? 'Overall'
-							: field === 'skillsscore'
+							: field === 'skillsScore'
 								? 'Skills'
 								: 'Experience'}
 					</button>
@@ -47,7 +47,7 @@ const LeaderboardTable = ({
 			</div>
 
 			{sortedRankings.map((r) => {
-				const candidate = candidates.find((c) => c.id === r.candidateid);
+				const candidate = candidates.find((c) => c.id === r.candidateId);
 				const badge = getRankBadge(r.rank);
 				return (
 					<FrostedCard key={r.id} className="p-4" onClick={() => onSelect(r)}>
@@ -76,13 +76,13 @@ const LeaderboardTable = ({
 							</div>
 							<div className="flex items-center gap-3 md:gap-4 flex-shrink-0">
 								<div className="w-14 md:w-16">
-									<ProgressBar label="Overall" value={r.overallscore} size="sm" />
+									<ProgressBar label="Overall" value={r.overallScore} size="sm" />
 								</div>
 								<div className="w-14 md:w-16">
-									<ProgressBar label="Skills" value={r.skillsscore} size="sm" />
+									<ProgressBar label="Skills" value={r.skillsScore} size="sm" />
 								</div>
 								<div className="w-14 md:w-16 hidden sm:block">
-									<ProgressBar label="Exp" value={r.experiencescore} size="sm" />
+									<ProgressBar label="Exp" value={r.experienceScore} size="sm" />
 								</div>
 							</div>
 						</div>

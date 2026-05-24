@@ -24,15 +24,15 @@ const RankingPage = ({ preselectedJobId }: RankingPageProps) => {
 	const [selectedJobId, setSelectedJobId] = useState(preselectedJobId ?? '');
 	const [loading, setLoading] = useState(true);
 	const [ranking, setRanking] = useState(false);
-	const [sortBy, setSortBy] = useState<'overallscore' | 'skillsscore' | 'experiencescore'>(
-		'overallscore',
+	const [sortBy, setSortBy] = useState<'overallScore' | 'skillsScore' | 'experienceScore'>(
+		'overallScore',
 	);
 	const [selectedRanking, setSelectedRanking] = useState<Ranking | null>(null);
 
 	const loadData = async () => {
 		const [jobsRes, candidatesRes] = await Promise.all([
-			supabase.from('jobs').select('*').order('createdat', { ascending: false }),
-			supabase.from('candidates').select('*').order('createdat', { ascending: false }),
+			supabase.from('jobs').select('*').order('createdAt', { ascending: false }),
+			supabase.from('candidates').select('*').order('createdAt', { ascending: false }),
 		]);
 		setJobs((jobsRes.data as Job[]) ?? []);
 		setCandidates((candidatesRes.data as Candidate[]) ?? []);
@@ -54,7 +54,7 @@ const RankingPage = ({ preselectedJobId }: RankingPageProps) => {
 				const { data } = await supabase
 					.from('rankings')
 					.select('*')
-					.eq('jobid', selectedJobId);
+					.eq('jobId', selectedJobId);
 				setRankings((data as Ranking[]) ?? []);
 			});
 		}
@@ -68,18 +68,18 @@ const RankingPage = ({ preselectedJobId }: RankingPageProps) => {
 			setRanking(false);
 			return;
 		}
-		await supabase.from('rankings').delete().eq('jobid', selectedJobId);
+		await supabase.from('rankings').delete().eq('jobId', selectedJobId);
 		const newRankings: Ranking[] = [];
 		for (const candidate of candidates) {
 			const scores = calculateScores(candidate, job);
 			const { data } = await supabase
 				.from('rankings')
-				.insert({ candidateid: candidate.id, jobid: selectedJobId, ...scores })
+				.insert({ candidateId: candidate.id, jobId: selectedJobId, ...scores })
 				.select()
 				.single();
 			if (data) newRankings.push(data as Ranking);
 		}
-		const sorted = [...newRankings].sort((a, b) => b.overallscore - a.overallscore);
+		const sorted = [...newRankings].sort((a, b) => b.overallScore - a.overallScore);
 		for (let i = 0; i < sorted.length; i++) {
 			await supabase
 				.from('rankings')

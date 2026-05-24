@@ -19,8 +19,8 @@ const getAge = (dateStr: string) => {
 };
 
 type CandidateJobMatch = {
-	jobid: string;
-	overallscore: number;
+	jobId: string;
+	overallScore: number;
 	jobtitle: string;
 };
 
@@ -64,7 +64,7 @@ const CandidateProfileModal = ({
 							Experience
 						</label>
 						<p className="text-sm text-[var(--text-primary)] mt-1">
-							{candidate.experienceyears} years
+							{candidate.experienceYears} years
 						</p>
 					</div>
 					<div>
@@ -80,7 +80,7 @@ const CandidateProfileModal = ({
 							Time to Join
 						</label>
 						<p className="text-sm text-[var(--text-primary)] mt-1">
-							{candidate.timetojoin ?? 'Not specified'}
+							{candidate.timeToJoin ?? 'Not specified'}
 						</p>
 					</div>
 					<div>
@@ -88,7 +88,7 @@ const CandidateProfileModal = ({
 							Waiting Period
 						</label>
 						<p className="text-sm text-[var(--text-primary)] mt-1">
-							{candidate.waitingperiod ?? 'Not specified'}
+							{candidate.waitingPeriod ?? 'Not specified'}
 						</p>
 					</div>
 					<div>
@@ -96,7 +96,7 @@ const CandidateProfileModal = ({
 							Resume Age
 						</label>
 						<p className="text-sm text-[var(--text-primary)] mt-1">
-							{getAge(candidate.createdat)}
+							{getAge(candidate.createdAt)}
 						</p>
 					</div>
 				</div>
@@ -109,7 +109,7 @@ const CandidateProfileModal = ({
 						<div className="space-y-2 mt-2">
 							{candidateJobs.map((match) => (
 								<div
-									key={match.jobid}
+									key={match.jobId}
 									className="flex items-center justify-between py-2 px-3 rounded-xl bg-[var(--input-bg)] border border-[var(--input-border)]"
 								>
 									<div className="flex items-center gap-2 min-w-0">
@@ -123,14 +123,14 @@ const CandidateProfileModal = ({
 									</div>
 									<span
 										className={`text-xs font-bold tabular-nums shrink-0 ml-2 ${
-											match.overallscore >= 70
+											match.overallScore >= 70
 												? 'text-emerald-400'
-												: match.overallscore >= 40
+												: match.overallScore >= 40
 													? 'text-amber-400'
 													: 'text-red-400'
 										}`}
 									>
-										{match.overallscore}%
+										{match.overallScore}%
 									</span>
 								</div>
 							))}
@@ -171,13 +171,13 @@ const CandidateProfileModal = ({
 					</div>
 				)}
 
-				{(candidate.workhistory ?? []).length > 0 && (
+				{(candidate.workHistory ?? []).length > 0 && (
 					<div>
 						<label className="text-xs font-medium text-[var(--text-quaternary)] uppercase tracking-wider">
 							Work History
 						</label>
 						<div className="space-y-2 mt-2">
-							{candidate.workhistory.map((work, i) => (
+							{candidate.workHistory.map((work, i) => (
 								<div key={i} className="text-sm">
 									<p className="text-[var(--text-primary)] font-medium">
 										{work.title} at {work.company}

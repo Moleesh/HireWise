@@ -100,13 +100,13 @@ const JobPreviewStep = ({
 				</FrostedCard>
 			)}
 
-			{(job.goodtohave ?? []).length > 0 && (
+			{(job.goodToHave ?? []).length > 0 && (
 				<FrostedCard className="p-6" hover={false}>
 					<h3 className="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wider mb-3">
 						Good to Have
 					</h3>
 					<div className="flex flex-wrap gap-2">
-						{job.goodtohave!.map((item) => (
+						{job.goodToHave!.map((item) => (
 							<span
 								key={item}
 								className="px-3 py-1.5 rounded-lg text-xs font-medium bg-[var(--btn-ghost-bg)] text-[var(--text-secondary)] border border-[var(--border-subtle)]"

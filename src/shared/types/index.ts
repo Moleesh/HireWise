@@ -1,9 +1,6 @@
-/**
- * ThemeName - Available theme names
- *
- * @format
- */
+/** @format */
 
+/** ThemeName - Available theme names */
 export type ThemeName =
 	| 'midnight-emerald'
 	| 'ocean-depth'
@@ -24,7 +21,7 @@ export type JobPoster = {
 	/** Prompt that was used to produce this poster */
 	prompt: string;
 	/** ISO timestamp of generation */
-	createdat: string;
+	createdAt: string;
 };
 
 /** Job - Job description record from the `jobs` table */
@@ -33,47 +30,25 @@ export type Job = {
 	title: string;
 	department: string | null;
 	location: string | null;
-	employmenttype: string | null;
-	experiencelevel: string | null;
-	salaryrange: string | null;
+	employmentType: string | null;
+	experienceLevel: string | null;
+	salaryRange: string | null;
 	summary: string | null;
 	responsibilities: string[];
 	requirements: string[];
 	skills: string[];
-	goodtohave: string[];
+	goodToHave: string[];
 	benefits: string[];
 	posters: JobPoster[];
 	status: 'draft' | 'published' | 'filled';
-	createdby: string | null;
-	createdat: string;
-	updatedat: string;
-	duplicatedfromid: string | null;
+	createdBy: string | null;
+	createdAt: string;
+	updatedAt: string;
+	duplicatedFromId: string | null;
 };
 
 /** CandidateStatus - Candidate status values */
 export type CandidateStatus = 'available' | 'in-progress' | 'offered' | 'hired' | 'rejected';
-
-/** Candidate - Candidate record from the `candidates` table */
-export type Candidate = {
-	id: string;
-	name: string;
-	email: string;
-	source: string;
-	fileurl: string;
-	filename: string;
-	rawtext: string;
-	skills: string[];
-	experienceyears: number;
-	education: EducationEntry[];
-	workhistory: WorkHistoryEntry[];
-	parseddata: Record<string, unknown>;
-	uploadedby: string | null;
-	createdat: string;
-	updatedat: string;
-	status: CandidateStatus;
-	timetojoin: string;
-	waitingperiod: string;
-};
 
 /** EducationEntry - Education entry within a candidate's parsed data */
 export type EducationEntry = {
@@ -90,30 +65,53 @@ export type WorkHistoryEntry = {
 	description: string;
 };
 
+/** Candidate - Candidate record from the `candidates` table */
+export type Candidate = {
+	id: string;
+	name: string;
+	email: string;
+	source: string;
+	fileUrl: string;
+	fileName: string;
+	rawText: string;
+	skills: string[];
+	experienceYears: number;
+	education: EducationEntry[];
+	workHistory: WorkHistoryEntry[];
+	parsedData: Record<string, unknown>;
+	uploadedBy: string | null;
+	createdAt: string;
+	updatedAt: string;
+	status: CandidateStatus;
+	timeToJoin: string;
+	waitingPeriod: string;
+};
+
 /** Ranking - Ranking record from the `rankings` table */
 export type Ranking = {
 	id: string;
-	candidateid: string;
-	jobid: string;
-	overallscore: number;
-	skillsscore: number;
-	experiencescore: number;
-	educationscore: number;
-	keywordscore: number;
-	matchedskills: string[];
-	missingskills: string[];
+	candidateId: string;
+	jobId: string;
+	overallScore: number;
+	skillsScore: number;
+	experienceScore: number;
+	educationScore: number;
+	keywordScore: number;
+	matchedSkills: string[];
+	missingSkills: string[];
 	highlights: string[];
 	notes: string;
 	rank: number;
-	createdby: string | null;
-	createdat: string;
+	createdBy: string | null;
+	createdAt: string;
 };
 
-/** User - User record from the `users` table */
+/** User - User record from the `app_users` table */
 export type User = {
 	id: string;
 	email: string;
 	role: string;
-	createdat: string;
-	lastsigninat: string | null;
+	themePreference: ThemeName;
+	createdAt: string;
+	lastSignInAt: string | null;
 };

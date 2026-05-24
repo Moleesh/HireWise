@@ -7,7 +7,7 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
  *
  * Two modes:
  *   - mode: "enhance"  -> rewrites raw pasted text into a clean, well-structured JD
- *   - mode: "parse" (default) -> extracts structured fields (title, department, skills, goodtohave)
+ *   - mode: "parse" (default) -> extracts structured fields (title, department, skills, goodToHave)
  *
  * Uses Lovable AI Gateway when LOVABLE_API_KEY is configured, falls back to a
  * lightweight regex heuristic otherwise so the function never hard-fails.
@@ -85,7 +85,7 @@ const fallbackExtract = (text: string) => {
 	const deptMatch = text.match(/(?:department|team|division)\s*:\s*([^\n,]+)/i);
 	const department = deptMatch?.[1]?.trim() ?? '';
 	const skills = COMMON_SKILLS.filter((s) => lower.includes(s.toLowerCase()));
-	return { title, department, skills, goodtohave: [] as string[] };
+	return { title, department, skills, goodToHave: [] as string[] };
 };
 
 const callAi = async (messages: unknown[], tools?: unknown[], toolChoice?: unknown) => {
@@ -131,10 +131,10 @@ const extract = async (text: string) => {
 					title: { type: 'string' },
 					department: { type: 'string' },
 					skills: { type: 'array', items: { type: 'string' } },
-					goodtohave: { type: 'array', items: { type: 'string' } },
+					goodToHave: { type: 'array', items: { type: 'string' } },
 					summary: { type: 'string' },
 				},
-				required: ['title', 'department', 'skills', 'goodtohave'],
+				required: ['title', 'department', 'skills', 'goodToHave'],
 				additionalProperties: false,
 			},
 		},

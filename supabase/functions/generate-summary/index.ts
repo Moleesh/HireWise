@@ -18,7 +18,7 @@ const corsHeaders = {
 const AI_URL = 'https://ai.gateway.lovable.dev/v1/chat/completions';
 const MODEL = 'google/gemini-3-flash-preview';
 
-const fallback = (title: string, dept: string, skills: string[], goodtohave: string[]): string => {
+const fallback = (title: string, dept: string, skills: string[], goodToHave: string[]): string => {
 	const lines = [
 		`${title || 'Open Role'} — ${dept || 'Team'}`,
 		'',
@@ -29,8 +29,8 @@ const fallback = (title: string, dept: string, skills: string[], goodtohave: str
 		"What you'll bring",
 		...skills.slice(0, 5).map((s) => `• Strong working knowledge of ${s}.`),
 		'',
-		goodtohave.length ? 'Nice to have' : '',
-		...goodtohave.slice(0, 4).map((s) => `• Familiarity with ${s}.`),
+		goodToHave.length ? 'Nice to have' : '',
+		...goodToHave.slice(0, 4).map((s) => `• Familiarity with ${s}.`),
 	].filter(Boolean);
 	return lines.join('\n');
 };
@@ -38,12 +38,12 @@ const fallback = (title: string, dept: string, skills: string[], goodtohave: str
 Deno.serve(async (req: Request) => {
 	if (req.method === 'OPTIONS') return new Response(null, { status: 200, headers: corsHeaders });
 	try {
-		const { title = '', department = '', skills = [], goodtohave = [] } = await req.json();
+		const { title = '', department = '', skills = [], goodToHave = [] } = await req.json();
 		const key = Deno.env.get('LOVABLE_API_KEY');
 
 		if (!key) {
 			return new Response(
-				JSON.stringify({ summary: fallback(title, department, skills, goodtohave) }),
+				JSON.stringify({ summary: fallback(title, department, skills, goodToHave) }),
 				{ headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
 			);
 		}
@@ -61,7 +61,7 @@ Deno.serve(async (req: Request) => {
 					},
 					{
 						role: 'user',
-						content: JSON.stringify({ title, department, skills, goodtohave }),
+						content: JSON.stringify({ title, department, skills, goodToHave }),
 					},
 				],
 			}),
@@ -76,14 +76,14 @@ Deno.serve(async (req: Request) => {
 				});
 			}
 			return new Response(
-				JSON.stringify({ summary: fallback(title, department, skills, goodtohave) }),
+				JSON.stringify({ summary: fallback(title, department, skills, goodToHave) }),
 				{ headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
 			);
 		}
 
 		const data = await res.json();
 		const summary =
-			data.choices?.[0]?.message?.content ?? fallback(title, department, skills, goodtohave);
+			data.choices?.[0]?.message?.content ?? fallback(title, department, skills, goodToHave);
 		return new Response(JSON.stringify({ summary }), {
 			headers: { ...corsHeaders, 'Content-Type': 'application/json' },
 		});

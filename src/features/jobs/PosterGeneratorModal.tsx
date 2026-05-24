@@ -100,7 +100,7 @@ const PosterGeneratorModal = ({
 		const poster: JobPoster = {
 			url: v.url,
 			prompt: v.prompt,
-			createdat: new Date().toISOString(),
+			createdAt: new Date().toISOString(),
 		};
 		onSavePosters([...(job.posters ?? []), poster]);
 		onClose();

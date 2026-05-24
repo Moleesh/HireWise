@@ -63,7 +63,7 @@ const AppContent = () => {
 
 /** App - Root with router + providers. */
 const App = () => (
-	<BrowserRouter>
+	<BrowserRouter basename="/HireWise">
 		<ThemeProvider>
 			<AuthProvider>
 				<AppContent />

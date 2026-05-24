@@ -16,7 +16,7 @@ const useCandidates = () => {
 		const { data } = await supabase
 			.from('candidates')
 			.select('*')
-			.order('createdat', { ascending: false });
+			.order('createdAt', { ascending: false });
 		setCandidates((data as Candidate[]) ?? []);
 		setLoading(false);
 	};
@@ -36,11 +36,11 @@ const useCandidates = () => {
 		if (uploadError) return { data: null, error: uploadError.message };
 
 		const { data: urlData } = supabase.storage.from('resumes').getPublicUrl(filePath);
-		const fileurl = urlData?.publicUrl ?? '';
+		const fileUrl = urlData?.publicUrl ?? '';
 
 		// Extract text on the client so the edge function gets real content
 		// for PDF/DOCX/TXT instead of binary garbage.
-		const rawtext = await extractResumeText(file);
+		const rawText = await extractResumeText(file);
 
 		const parseRes = await fetch(`${SUPABASE_URL}/functions/v1/parse-resume`, {
 			method: 'POST',
@@ -48,7 +48,7 @@ const useCandidates = () => {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
 			},
-			body: JSON.stringify({ text: rawtext, file_name: file.name }),
+			body: JSON.stringify({ text: rawText, file_name: file.name }),
 		});
 		const parsed = await parseRes.json();
 
@@ -56,14 +56,14 @@ const useCandidates = () => {
 			name: parsed.candidate_name ?? file.name.replace(/\.[^/.]+$/, ''),
 			email: parsed.candidate_email ?? '',
 			source: 'upload',
-			fileurl,
-			filename: file.name,
-			rawtext,
+			fileUrl,
+			fileName: file.name,
+			rawText,
 			skills: parsed.skills ?? [],
-			experienceyears: parsed.experience_years ?? 0,
+			experienceYears: parsed.experience_years ?? 0,
 			education: parsed.education ?? [],
-			workhistory: parsed.work_history ?? [],
-			parseddata: parsed,
+			workHistory: parsed.work_history ?? [],
+			parsedData: parsed,
 		};
 
 		const { data, error } = await supabase
@@ -85,22 +85,22 @@ const useCandidates = () => {
 	};
 
 	const downloadResume = async (candidate: Candidate) => {
-		if (candidate.fileurl) {
+		if (candidate.fileUrl) {
 			const { data, error } = await supabase.storage
 				.from('resumes')
-				.createSignedUrl(candidate.fileurl.split('/').pop()!, 60);
+				.createSignedUrl(candidate.fileUrl.split('/').pop()!, 60);
 
 			if (!error && data?.signedUrl) {
 				const a = document.createElement('a');
 				a.href = data.signedUrl;
-				a.download = candidate.filename ?? `${candidate.name}_resume.pdf`;
+				a.download = candidate.fileName ?? `${candidate.name}_resume.pdf`;
 				a.click();
 				return;
 			}
 		}
 
-		if (candidate.rawtext) {
-			const blob = new Blob([candidate.rawtext], { type: 'text/plain' });
+		if (candidate.rawText) {
+			const blob = new Blob([candidate.rawText], { type: 'text/plain' });
 			const url = URL.createObjectURL(blob);
 			const a = document.createElement('a');
 			a.href = url;
@@ -113,7 +113,7 @@ const useCandidates = () => {
 	const updateCandidate = async (id: string, updates: Partial<Candidate>) => {
 		const { data, error } = await supabase
 			.from('candidates')
-			.update({ ...updates, updatedat: new Date().toISOString() })
+			.update({ ...updates, updatedAt: new Date().toISOString() })
 			.eq('id', id)
 			.select()
 			.single();

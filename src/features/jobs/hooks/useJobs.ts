@@ -14,7 +14,7 @@ const useJobs = () => {
 		const { data } = await supabase
 			.from('jobs')
 			.select('*')
-			.order('updatedat', { ascending: false });
+			.order('updatedAt', { ascending: false });
 		setJobs((data as Job[]) ?? []);
 		setLoading(false);
 	};
@@ -33,7 +33,7 @@ const useJobs = () => {
 	const updateJob = async (id: string, updates: Partial<Job>) => {
 		const { data, error } = await supabase
 			.from('jobs')
-			.update({ ...updates, updatedat: new Date().toISOString() })
+			.update({ ...updates, updatedAt: new Date().toISOString() })
 			.eq('id', id)
 			.select()
 			.single();
@@ -57,16 +57,16 @@ const useJobs = () => {
 			title: `${original.title} (Copy)`,
 			department: original.department,
 			location: original.location,
-			employmenttype: original.employmenttype,
-			experiencelevel: original.experiencelevel,
-			salaryrange: original.salaryrange,
+			employmentType: original.employmentType,
+			experienceLevel: original.experienceLevel,
+			salaryRange: original.salaryRange,
 			summary: original.summary,
 			responsibilities: original.responsibilities,
 			requirements: original.requirements,
 			skills: original.skills,
 			benefits: original.benefits,
 			status: 'draft',
-			duplicatedfromid: original.id,
+			duplicatedFromId: original.id,
 		};
 
 		return createJob(newJob);

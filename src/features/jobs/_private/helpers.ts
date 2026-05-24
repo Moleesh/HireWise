@@ -47,7 +47,7 @@ export const buildPosterPrompt = (
 ): string => {
 	const palette = themePosterPalette(theme);
 	const skills = (job.skills ?? []).slice(0, 5).join(', ');
-	const goodToHave = (job.goodtohave ?? []).slice(0, 3).join(', ');
+	const goodToHave = (job.goodToHave ?? []).slice(0, 3).join(', ');
 	const styles = [
 		'editorial minimalist typography poster, generous whitespace, large display type',
 		'modern geometric poster with subtle gradients, layered shapes, bold sans-serif',
@@ -76,5 +76,5 @@ export const buildSummaryFields = (job: Partial<Job>) => ({
 	title: job.title ?? '',
 	department: job.department ?? '',
 	skills: job.skills ?? [],
-	goodtohave: job.goodtohave ?? [],
+	goodToHave: job.goodToHave ?? [],
 });

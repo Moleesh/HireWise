@@ -53,16 +53,16 @@ const JobTile = ({
 					<div className="flex items-center gap-4 text-xs text-[var(--text-quaternary)]">
 						{job.department && <span>{job.department}</span>}
 						{job.location && <span>{job.location}</span>}
-						{job.employmenttype && (
-							<span className="capitalize">{job.employmenttype}</span>
+						{job.employmentType && (
+							<span className="capitalize">{job.employmentType}</span>
 						)}
-						{job.experiencelevel && (
-							<span className="capitalize">{job.experiencelevel}</span>
+						{job.experienceLevel && (
+							<span className="capitalize">{job.experienceLevel}</span>
 						)}
 						{(job.skills?.length ?? 0) > 0 && <span>{job.skills!.length} skills</span>}
 						<span className="flex items-center gap-1">
 							<Clock size={10} />
-							{getAge(job.createdat)}
+							{getAge(job.createdAt)}
 						</span>
 					</div>
 				</div>

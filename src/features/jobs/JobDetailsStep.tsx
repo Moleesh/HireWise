@@ -57,7 +57,12 @@ const ChipList = ({
 			<input
 				value={inputValue}
 				onChange={(e) => onInputChange(e.target.value)}
-				onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), onAdd())}
+				onKeyDown={(e) => {
+					if (e.key === 'Enter') {
+						e.preventDefault();
+						onAdd();
+					}
+				}}
 				className="flex-1 bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-2 text-sm text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-ring)] transition-all"
 				placeholder={placeholder}
 			/>
@@ -129,10 +134,10 @@ const JobDetailsStep = ({
 
 			<ChipList
 				title="Good to Have"
-				values={job.goodtohave ?? []}
-				inputValue={newItem.goodtohave ?? ''}
-				onInputChange={(v) => onNewItemChange({ goodtohave: v })}
-				onAdd={() => onAddGoodToHave(newItem.goodtohave ?? '')}
+				values={job.goodToHave ?? []}
+				inputValue={newItem.goodToHave ?? ''}
+				onInputChange={(v) => onNewItemChange({ goodToHave: v })}
+				onAdd={() => onAddGoodToHave(newItem.goodToHave ?? '')}
 				onRemove={onRemoveGoodToHave}
 				placeholder="Add a nice-to-have and press Enter"
 			/>

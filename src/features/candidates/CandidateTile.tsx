@@ -35,22 +35,22 @@ const CandidateTile = ({ candidate, onSelect, onDownload, onDelete }: CandidateT
 			</div>
 
 			<div className="flex items-center gap-3 text-xs text-[var(--text-quaternary)] mb-3 flex-wrap">
-				{candidate.experienceyears > 0 && <span>{candidate.experienceyears}y exp</span>}
-				{candidate.timetojoin && (
+				{candidate.experienceYears > 0 && <span>{candidate.experienceYears}y exp</span>}
+				{candidate.timeToJoin && (
 					<span className="flex items-center gap-1">
 						<Calendar size={10} />
-						{candidate.timetojoin}
+						{candidate.timeToJoin}
 					</span>
 				)}
-				{candidate.waitingperiod && (
+				{candidate.waitingPeriod && (
 					<span className="flex items-center gap-1">
 						<Hourglass size={10} />
-						{candidate.waitingperiod}
+						{candidate.waitingPeriod}
 					</span>
 				)}
 				<span className="flex items-center gap-1">
 					<Clock size={10} />
-					{getAge(candidate.createdat)}
+					{getAge(candidate.createdAt)}
 				</span>
 			</div>
 

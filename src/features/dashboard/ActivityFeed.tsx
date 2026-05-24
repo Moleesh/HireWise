@@ -10,7 +10,7 @@ type RecentItem = {
 	name?: string;
 	title?: string;
 	status: string;
-	createdat: string;
+	createdAt: string;
 };
 
 type ActivityFeedProps = {
@@ -71,10 +71,10 @@ const ActivityFeed = ({
 								<StatusBadge status={item.status} />
 								<span
 									className="text-xs text-[var(--text-quaternary)] hidden sm:flex items-center gap-1"
-									title={getAge(item.createdat)}
+									title={getAge(item.createdAt)}
 								>
 									<Clock className="w-3 h-3" />
-									{formatDate(item.createdat)}
+									{formatDate(item.createdAt)}
 								</span>
 							</div>
 						</div>

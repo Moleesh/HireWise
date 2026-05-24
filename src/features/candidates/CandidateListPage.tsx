@@ -24,7 +24,7 @@ const CandidateListPage = () => {
 	const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 	const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
 	const [candidateJobs, setCandidateJobs] = useState<
-		{ jobid: string; overallscore: number; jobtitle: string }[]
+		{ jobId: string; overallScore: number; jobtitle: string }[]
 	>([]);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -64,22 +64,24 @@ const CandidateListPage = () => {
 	const loadCandidateJobs = async (candidateId: string) => {
 		const { data } = await supabase
 			.from('rankings')
-			.select('jobid, overallscore')
-			.eq('candidateid', candidateId)
-			.order('overallscore', { ascending: false })
+			.select('jobId, overallScore')
+			.eq('candidateId', candidateId)
+			.order('overallScore', { ascending: false })
 			.limit(5);
-		if (data && data.length > 0) {
-			const jobIds = data.map((r) => r.jobid);
+		const rows = (data ?? []) as { jobId: string; overallScore: number }[];
+		if (rows.length > 0) {
+			const jobIds = rows.map((r) => r.jobId);
 			const { data: jobsData } = await supabase
 				.from('jobs')
 				.select('id, title')
 				.in('id', jobIds);
-			const jobMap = new Map((jobsData ?? []).map((j) => [j.id, j.title]));
+			const jobs = (jobsData ?? []) as { id: string; title: string }[];
+			const jobMap = new Map(jobs.map((j) => [j.id, j.title]));
 			setCandidateJobs(
-				data.map((r) => ({
-					jobid: r.jobid,
-					overallscore: Number(r.overallscore),
-					jobtitle: jobMap.get(r.jobid) ?? 'Unknown',
+				rows.map((r) => ({
+					jobId: r.jobId,
+					overallScore: Number(r.overallScore),
+					jobtitle: jobMap.get(r.jobId) ?? 'Unknown',
 				})),
 			);
 		} else {

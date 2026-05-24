@@ -47,9 +47,9 @@ const UserDirectory = ({ users, onDelete }: UserDirectoryProps) => {
 						</div>
 						<div className="flex items-center gap-4 text-xs text-[var(--text-quaternary)]">
 							<span className="flex items-center gap-1">
-								<Clock size={10} /> Created {formatDate(user.createdat)}
+								<Clock size={10} /> Created {formatDate(user.createdAt)}
 							</span>
-							<span>Last sign in {formatDate(user.lastsigninat)}</span>
+							<span>Last sign in {formatDate(user.lastSignInAt)}</span>
 						</div>
 					</FrostedCard>
 				))}
@@ -117,12 +117,12 @@ const UserDirectory = ({ users, onDelete }: UserDirectoryProps) => {
 												size={12}
 												className="text-[var(--text-quaternary)]"
 											/>
-											{formatDate(user.createdat)}
+											{formatDate(user.createdAt)}
 										</span>
 									</td>
 									<td className="px-6 py-4">
 										<span className="text-sm text-[var(--text-tertiary)]">
-											{formatDate(user.lastsigninat)}
+											{formatDate(user.lastSignInAt)}
 										</span>
 									</td>
 									<td className="px-6 py-4 text-right">

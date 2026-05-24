@@ -27,7 +27,7 @@ const UserManagementPage = () => {
 		const { data } = await supabase
 			.from('users')
 			.select('*')
-			.order('createdat', { ascending: false });
+			.order('createdAt', { ascending: false });
 		setUsers((data as UserType[]) ?? []);
 		setLoading(false);
 	};

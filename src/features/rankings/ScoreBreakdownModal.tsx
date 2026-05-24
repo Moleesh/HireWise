@@ -15,7 +15,7 @@ type ScoreBreakdownModalProps = {
 const ScoreBreakdownModal = ({ ranking, candidates, onClose }: ScoreBreakdownModalProps) => {
 	if (!ranking) return null;
 
-	const candidate = candidates.find((c) => c.id === ranking.candidateid);
+	const candidate = candidates.find((c) => c.id === ranking.candidateId);
 
 	return (
 		<Modal open={!!ranking} onClose={onClose} title="Ranking Details" size="lg">
@@ -36,11 +36,11 @@ const ScoreBreakdownModal = ({ ranking, candidates, onClose }: ScoreBreakdownMod
 
 				<div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
 					{[
-						{ label: 'Overall', score: ranking.overallscore, weight: '40%' },
-						{ label: 'Skills', score: ranking.skillsscore, weight: '40%' },
-						{ label: 'Experience', score: ranking.experiencescore, weight: '25%' },
-						{ label: 'Education', score: ranking.educationscore, weight: '15%' },
-						{ label: 'Keywords', score: ranking.keywordscore, weight: '20%' },
+						{ label: 'Overall', score: ranking.overallScore, weight: '40%' },
+						{ label: 'Skills', score: ranking.skillsScore, weight: '40%' },
+						{ label: 'Experience', score: ranking.experienceScore, weight: '25%' },
+						{ label: 'Education', score: ranking.educationScore, weight: '15%' },
+						{ label: 'Keywords', score: ranking.keywordScore, weight: '20%' },
 					].map((item) => (
 						<div
 							key={item.label}
@@ -67,13 +67,13 @@ const ScoreBreakdownModal = ({ ranking, candidates, onClose }: ScoreBreakdownMod
 					))}
 				</div>
 
-				{(ranking.matchedskills ?? []).length > 0 && (
+				{(ranking.matchedSkills ?? []).length > 0 && (
 					<div>
 						<label className="text-xs font-medium text-[var(--text-quaternary)] uppercase tracking-wider">
 							Matched Skills
 						</label>
 						<div className="flex flex-wrap gap-1.5 mt-2">
-							{ranking.matchedskills.map((skill) => (
+							{ranking.matchedSkills.map((skill) => (
 								<span
 									key={skill}
 									className="px-2.5 py-1 rounded-lg text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
@@ -85,13 +85,13 @@ const ScoreBreakdownModal = ({ ranking, candidates, onClose }: ScoreBreakdownMod
 					</div>
 				)}
 
-				{(ranking.missingskills ?? []).length > 0 && (
+				{(ranking.missingSkills ?? []).length > 0 && (
 					<div>
 						<label className="text-xs font-medium text-[var(--text-quaternary)] uppercase tracking-wider">
 							Missing Skills
 						</label>
 						<div className="flex flex-wrap gap-1.5 mt-2">
-							{ranking.missingskills.map((skill) => (
+							{ranking.missingSkills.map((skill) => (
 								<span
 									key={skill}
 									className="px-2.5 py-1 rounded-lg text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20"

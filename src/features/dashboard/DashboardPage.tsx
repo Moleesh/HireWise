@@ -19,12 +19,12 @@ type Stats = {
 	totalCandidates: number;
 	hiredCandidates: number;
 	totalRankings: number;
-	recentJobs: { id: string; title: string; status: string; createdat: string }[];
+	recentJobs: { id: string; title: string; status: string; createdAt: string }[];
 	recentCandidates: {
 		id: string;
 		name: string;
 		source: string;
-		createdat: string;
+		createdAt: string;
 		status: string;
 	}[];
 };
@@ -59,13 +59,13 @@ const DashboardPage = ({ onNavigate }: DashboardProps) => {
 		const [recentJobsRes, recentCandidatesRes] = await Promise.all([
 			supabase
 				.from('jobs')
-				.select('id, title, status, createdat')
-				.order('createdat', { ascending: false })
+				.select('id, title, status, createdAt')
+				.order('createdAt', { ascending: false })
 				.limit(5),
 			supabase
 				.from('candidates')
-				.select('id, name, source, createdat, status')
-				.order('createdat', { ascending: false })
+				.select('id, name, source, createdAt, status')
+				.order('createdAt', { ascending: false })
 				.limit(5),
 		]);
 		setStats({
@@ -188,7 +188,7 @@ const DashboardPage = ({ onNavigate }: DashboardProps) => {
 						id: j.id,
 						title: j.title,
 						status: j.status,
-						createdat: j.createdat,
+						createdAt: j.createdAt,
 					}))}
 					onNavigate={onNavigate}
 					navigatePage="job-editor"
@@ -201,7 +201,7 @@ const DashboardPage = ({ onNavigate }: DashboardProps) => {
 						id: c.id,
 						name: c.name,
 						status: c.status,
-						createdat: c.createdat,
+						createdAt: c.createdAt,
 					}))}
 					onNavigate={onNavigate}
 					navigatePage="candidates"

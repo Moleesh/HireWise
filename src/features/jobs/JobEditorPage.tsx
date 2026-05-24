@@ -92,10 +92,10 @@ const JobEditorPage = ({ onNavigate, jobId, mode = 'create' }: JobEditorProps) =
 				title: (parsed.title as string) ?? prev.title ?? '',
 				department: (parsed.department as string) ?? prev.department ?? '',
 				skills: (parsed.skills as string[]) ?? prev.skills ?? [],
-				goodtohave:
-					(parsed.goodtohave as string[]) ??
+				goodToHave:
 					(parsed.goodToHave as string[]) ??
-					prev.goodtohave ??
+					(parsed.goodToHave as string[]) ??
+					prev.goodToHave ??
 					[],
 				summary: (parsed.summary as string) ?? rawText,
 			}));
@@ -113,7 +113,7 @@ const JobEditorPage = ({ onNavigate, jobId, mode = 'create' }: JobEditorProps) =
 			title: job.title,
 			department: job.department,
 			skills: job.skills,
-			goodtohave: job.goodtohave,
+			goodToHave: job.goodToHave,
 		});
 		if (res?.summary) setJob((prev) => ({ ...prev, summary: res.summary }));
 		setSummarizing(false);
@@ -134,7 +134,7 @@ const JobEditorPage = ({ onNavigate, jobId, mode = 'create' }: JobEditorProps) =
 		const result = jobId
 			? await supabase
 					.from('jobs')
-					.update({ ...saveData, updatedat: new Date().toISOString() })
+					.update({ ...saveData, updatedAt: new Date().toISOString() })
 					.eq('id', jobId)
 					.select()
 					.single()
@@ -161,15 +161,15 @@ const JobEditorPage = ({ onNavigate, jobId, mode = 'create' }: JobEditorProps) =
 
 	const addGoodToHave = (item: string) => {
 		const v = item.trim();
-		if (!v || (job.goodtohave ?? []).includes(v)) return;
-		updateField('goodtohave', [...(job.goodtohave ?? []), v]);
-		setNewItem((p) => ({ ...p, goodtohave: '' }));
+		if (!v || (job.goodToHave ?? []).includes(v)) return;
+		updateField('goodToHave', [...(job.goodToHave ?? []), v]);
+		setNewItem((p) => ({ ...p, goodToHave: '' }));
 	};
 
 	const removeGoodToHave = (item: string) =>
 		updateField(
-			'goodtohave',
-			(job.goodtohave ?? []).filter((s) => s !== item),
+			'goodToHave',
+			(job.goodToHave ?? []).filter((s) => s !== item),
 		);
 
 	const handleSavePosters = (posters: JobPoster[]) => updateField('posters', posters);

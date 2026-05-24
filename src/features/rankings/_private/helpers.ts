@@ -12,39 +12,39 @@ export const calculateScores = (candidate: Candidate, job: Job) => {
 	const missingSkills = jobSkills.filter(
 		(js) => !candidateSkills.some((cs) => js.includes(cs) || cs.includes(js)),
 	);
-	const skillsscore =
+	const skillsScore =
 		jobSkills.length > 0 ? Math.round((matchedSkills.length / jobSkills.length) * 100) : 50;
 	const expMap: Record<string, number> = { entry: 1, mid: 3, senior: 6, lead: 9, executive: 12 };
-	const requiredExp = expMap[job.experiencelevel ?? 'mid'] ?? 3;
-	const experiencescore = Math.min(
+	const requiredExp = expMap[job.experienceLevel ?? 'mid'] ?? 3;
+	const experienceScore = Math.min(
 		100,
-		Math.round(((candidate.experienceyears ?? 0) / requiredExp) * 100),
+		Math.round(((candidate.experienceYears ?? 0) / requiredExp) * 100),
 	);
-	const educationscore =
+	const educationScore =
 		(candidate.education ?? []).length > 0
 			? Math.min(100, (candidate.education ?? []).length * 30)
 			: 30;
 	const jobText =
 		`${job.title} ${job.summary ?? ''} ${(job.responsibilities ?? []).join(' ')} ${(job.requirements ?? []).join(' ')}`.toLowerCase();
 	const candidateText =
-		`${candidate.rawtext ?? ''} ${(candidate.skills ?? []).join(' ')}`.toLowerCase();
+		`${candidate.rawText ?? ''} ${(candidate.skills ?? []).join(' ')}`.toLowerCase();
 	const uniqueKeywords = [...new Set(jobText.split(/\s+/).filter((w) => w.length > 4))];
 	const matchedKeywords = uniqueKeywords.filter((kw) => candidateText.includes(kw));
-	const keywordscore =
+	const keywordScore =
 		uniqueKeywords.length > 0
 			? Math.round((matchedKeywords.length / uniqueKeywords.length) * 100)
 			: 50;
-	const overallscore = Math.round(
-		skillsscore * 0.4 + experiencescore * 0.25 + educationscore * 0.15 + keywordscore * 0.2,
+	const overallScore = Math.round(
+		skillsScore * 0.4 + experienceScore * 0.25 + educationScore * 0.15 + keywordScore * 0.2,
 	);
 	return {
-		overallscore,
-		skillsscore,
-		experiencescore,
-		educationscore,
-		keywordscore,
-		matchedskills: matchedSkills.map((s) => s.charAt(0).toUpperCase() + s.slice(1)),
-		missingskills: missingSkills.map((s) => s.charAt(0).toUpperCase() + s.slice(1)),
+		overallScore,
+		skillsScore,
+		experienceScore,
+		educationScore,
+		keywordScore,
+		matchedSkills: matchedSkills.map((s) => s.charAt(0).toUpperCase() + s.slice(1)),
+		missingSkills: missingSkills.map((s) => s.charAt(0).toUpperCase() + s.slice(1)),
 		highlights: matchedSkills.slice(0, 3),
 		notes: '',
 	};
