@@ -6,7 +6,7 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
  * parse-resume
  *
  * Receives extracted text from a resume (PDF/DOCX/TXT) — the client does file
- * extraction with pdfjs-dist / mammoth before calling this. Uses Lovable AI
+ * extraction with pdfjs-dist / mammoth before calling this. Uses AI
  * Gateway with tool calling to extract structured candidate data. Falls back to
  * heuristic regex when the key is missing or AI errors.
  */
@@ -53,7 +53,7 @@ const fallback = (text: string, file_name?: string) => {
 };
 
 const callAi = async (text: string, fileName: string | undefined) => {
-	const key = Deno.env.get('LOVABLE_API_KEY');
+	const key = Deno.env.get('API_KEY');
 	if (!key) throw new Error('no key');
 	const tool = {
 		type: 'function',

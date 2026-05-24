@@ -50,5 +50,5 @@ Set the AI gateway secret (required by `parse-jd`, `generate-summary`,
 `generate-poster`):
 
 ```bash
-supabase secrets set LOVABLE_API_KEY=<key> --project-ref orffvgvolpfwmjxpwtgt
+supabase secrets set API_KEY=<key> --project-ref orffvgvolpfwmjxpwtgt
 ```

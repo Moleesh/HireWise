@@ -9,7 +9,7 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
  *   - mode: "enhance"  -> rewrites raw pasted text into a clean, well-structured JD
  *   - mode: "parse" (default) -> extracts structured fields (title, department, skills, goodToHave)
  *
- * Uses Lovable AI Gateway when LOVABLE_API_KEY is configured, falls back to a
+ * Uses AI Gateway when API_KEY is configured, falls back to a
  * lightweight regex heuristic otherwise so the function never hard-fails.
  */
 
@@ -89,8 +89,8 @@ const fallbackExtract = (text: string) => {
 };
 
 const callAi = async (messages: unknown[], tools?: unknown[], toolChoice?: unknown) => {
-	const key = Deno.env.get('LOVABLE_API_KEY');
-	if (!key) throw new Error('LOVABLE_API_KEY missing');
+	const key = Deno.env.get('API_KEY');
+	if (!key) throw new Error('API_KEY missing');
 	const res = await fetch(AI_URL, {
 		method: 'POST',
 		headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
@@ -166,7 +166,7 @@ Deno.serve(async (req: Request) => {
 				headers: { ...corsHeaders, 'Content-Type': 'application/json' },
 			});
 		}
-		const hasKey = !!Deno.env.get('LOVABLE_API_KEY');
+		const hasKey = !!Deno.env.get('API_KEY');
 
 		if (mode === 'enhance') {
 			const out = hasKey ? await enhance(text) : text;

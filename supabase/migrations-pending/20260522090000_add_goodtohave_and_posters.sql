@@ -1,8 +1,7 @@
 /*
   # Add `goodtohave` and `posters` to jobs (Option B — deploy yourself)
 
-  This project keeps the upstream Supabase backend, so Lovable cannot apply
-  migrations here. Run this SQL on your upstream project via:
+  Run this SQL on your upstream project via:
 
       supabase db push          # if using the CLI with `supabase link`
       # or paste it into the Supabase SQL editor

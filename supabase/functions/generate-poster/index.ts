@@ -5,7 +5,7 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 /**
  * generate-poster
  *
- * Generates wall-in (portrait) recruitment poster images via Lovable AI Gateway.
+ * Generates wall-in (portrait) recruitment poster images via AI Gateway.
  * Body: { prompts: string[] }  — one prompt per requested variation (typically 3).
  * Returns: { images: { url: string; prompt: string }[] } where url is a data URL.
  */
@@ -49,9 +49,9 @@ Deno.serve(async (req: Request) => {
 				headers: { ...corsHeaders, 'Content-Type': 'application/json' },
 			});
 		}
-		const key = Deno.env.get('LOVABLE_API_KEY');
+		const key = Deno.env.get('API_KEY');
 		if (!key) {
-			return new Response(JSON.stringify({ error: 'LOVABLE_API_KEY is not configured' }), {
+			return new Response(JSON.stringify({ error: 'API_KEY is not configured' }), {
 				status: 500,
 				headers: { ...corsHeaders, 'Content-Type': 'application/json' },
 			});

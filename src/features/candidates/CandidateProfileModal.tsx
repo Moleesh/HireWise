@@ -21,7 +21,7 @@ const getAge = (dateStr: string) => {
 type CandidateJobMatch = {
 	jobId: string;
 	overallScore: number;
-	jobtitle: string;
+	jobTitle: string;
 };
 
 type CandidateProfileModalProps = {
@@ -118,7 +118,7 @@ const CandidateProfileModal = ({
 											className="text-[var(--text-quaternary)] shrink-0"
 										/>
 										<span className="text-sm text-[var(--text-primary)] truncate">
-											{match.jobtitle}
+											{match.jobTitle}
 										</span>
 									</div>
 									<span

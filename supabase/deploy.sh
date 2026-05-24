@@ -6,8 +6,8 @@
 #   ./supabase/deploy.sh <project-ref>
 #
 # Requires the Supabase CLI to be installed and authenticated (`supabase login`).
-# Set the LOVABLE_API_KEY secret separately:
-#   supabase secrets set LOVABLE_API_KEY=<key> --project-ref <ref>
+# Set the API_KEY secret separately:
+#   supabase secrets set API_KEY=<key> --project-ref <ref>
 
 set -euo pipefail
 
@@ -42,5 +42,5 @@ done
 echo
 echo "✓ All functions deployed."
 echo
-echo "Reminder: ensure the LOVABLE_API_KEY secret is set:"
-echo "  supabase secrets set LOVABLE_API_KEY=<key> --project-ref $PROJECT_REF"
+echo "Reminder: ensure the API_KEY secret is set:"
+echo "  supabase secrets set API_KEY=<key> --project-ref $PROJECT_REF"

@@ -24,7 +24,7 @@ const CandidateListPage = () => {
 	const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 	const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
 	const [candidateJobs, setCandidateJobs] = useState<
-		{ jobId: string; overallScore: number; jobtitle: string }[]
+		{ jobId: string; overallScore: number; jobTitle: string }[]
 	>([]);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -81,7 +81,7 @@ const CandidateListPage = () => {
 				rows.map((r) => ({
 					jobId: r.jobId,
 					overallScore: Number(r.overallScore),
-					jobtitle: jobMap.get(r.jobId) ?? 'Unknown',
+					jobTitle: jobMap.get(r.jobId) ?? 'Unknown',
 				})),
 			);
 		} else {

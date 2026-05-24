@@ -6,7 +6,7 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
  * generate-summary
  *
  * Generates a professional, bulleted JD summary from title, department, skills,
- * and good-to-have items via Lovable AI Gateway.
+ * and good-to-have items via AI Gateway.
  */
 
 const corsHeaders = {
@@ -39,7 +39,7 @@ Deno.serve(async (req: Request) => {
 	if (req.method === 'OPTIONS') return new Response(null, { status: 200, headers: corsHeaders });
 	try {
 		const { title = '', department = '', skills = [], goodToHave = [] } = await req.json();
-		const key = Deno.env.get('LOVABLE_API_KEY');
+		const key = Deno.env.get('API_KEY');
 
 		if (!key) {
 			return new Response(

@@ -7,7 +7,7 @@ type HireWiseIconProps = {
 
 /**
  * HireWiseIcon — refined brand mark.
- * A rounded squircle with a gradient interior, a stylised
+ * A rounded squircle with a gradient interior, a stylized
  * "H" carved out of negative space, and an animated accent
  * spark that orbits the corner.
  */
