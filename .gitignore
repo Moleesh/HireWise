@@ -21,3 +21,8 @@ dist-ssr
 *.sln
 *.sw?
 .temp
+
+/supabase/snippets/
+/supabase/supabase/
+/supabase/.branches/
+/supabase/migrations/
