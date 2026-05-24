@@ -25,14 +25,6 @@ jobs:
               run: bun run typecheck
             - name: Build project
               run: bun run build
-            - name: Verify build
-              run: |
-                echo "=== Checking dist structure ==="
-                ls -la dist/
-                echo "=== Checking index.html ==="
-                head -30 dist/index.html
-                echo "=== Checking assets ==="
-                ls -la dist/assets/ 2>/dev/null || echo "No assets folder"
             - name: Upload to Pages
               uses: actions/upload-pages-artifact@v5
               with:
