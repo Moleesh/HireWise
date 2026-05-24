@@ -1,5 +1,4 @@
 # @format
-
 name: Build and Deploy to GitHub Pages
 on:
     push:
@@ -7,12 +6,10 @@ on:
 env:
     BUN_VERSION: '1'
     FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
     build:
         name: Build Application
         runs-on: ubuntu-latest
-
         steps:
             - name: Checkout code
               uses: actions/checkout@v5
@@ -28,6 +25,14 @@ jobs:
               run: bun run typecheck
             - name: Build project
               run: bun run build
+            - name: Verify build
+              run: |
+                echo "=== Checking dist structure ==="
+                ls -la dist/
+                echo "=== Checking index.html ==="
+                head -30 dist/index.html
+                echo "=== Checking assets ==="
+                ls -la dist/assets/ 2>/dev/null || echo "No assets folder"
             - name: Upload to Pages
               uses: actions/upload-pages-artifact@v5
               with:
@@ -37,7 +42,6 @@ jobs:
         needs: build
         runs-on: ubuntu-latest
         if: github.ref == 'refs/heads/main'
-
         permissions:
             contents: read
             pages: write
@@ -47,9 +51,7 @@ jobs:
             url: ${{ steps.deployment.outputs.page_url }}
         steps:
             - name: Download artifact
-              uses: actions/download-artifact@v5
-              with:
-                  name: github-pages
+              uses: actions/download-pages-artifact@v5
             - name: Setup Pages
               uses: actions/configure-pages@v5
             - name: Deploy to GitHub Pages
