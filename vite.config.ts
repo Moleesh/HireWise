@@ -16,6 +16,11 @@ export default defineConfig({
 			},
 		},
 	},
+	server: {
+		headers: {
+			'Content-Type': 'application/javascript',
+		},
+	},
 	build: {
 		chunkSizeWarningLimit: 1000,
 		rollupOptions: {
@@ -24,6 +29,9 @@ export default defineConfig({
 					if (id.includes('pdfjs-dist')) return 'pdf';
 					if (id.includes('mammoth')) return 'mammoth';
 				},
+				entryFileNames: '[name]-[hash].js',
+				chunkFileNames: '[name]-[hash].js',
+				assetFileNames: '[name]-[hash][extname]',
 			},
 		},
 	},
