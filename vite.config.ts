@@ -16,11 +16,6 @@ export default defineConfig({
 			},
 		},
 	},
-	server: {
-		headers: {
-			'Content-Type': 'application/javascript',
-		},
-	},
 	build: {
 		chunkSizeWarningLimit: 1000,
 		rollupOptions: {
