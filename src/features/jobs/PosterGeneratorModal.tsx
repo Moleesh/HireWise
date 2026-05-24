@@ -30,7 +30,8 @@ const PosterGeneratorModal = ({
 	const [generating, setGenerating] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	const callAi = async (prompt: string): Promise<string | null> => {
+	/** callAi - Calls generate-poster with N prompts; returns parallel URLs (null on per-item failure). */
+	const callAi = async (prompts: string[]): Promise<(string | null)[]> => {
 		try {
 			const res = await fetch(`${SUPABASE_URL}/functions/v1/generate-poster`, {
 				method: 'POST',
@@ -38,12 +39,25 @@ const PosterGeneratorModal = ({
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
 				},
-				body: JSON.stringify({ prompt }),
+				body: JSON.stringify({ prompts }),
 			});
 			const data = await res.json();
-			return data.url ?? data.image ?? null;
-		} catch {
-			return null;
+			if (!res.ok) {
+				if (res.status === 429) setError('Rate limit reached. Please retry in a moment.');
+				else if (res.status === 402)
+					setError('AI credits exhausted. Add funds in Workspace > Usage.');
+				else setError(data?.error ?? `Poster generation failed (${res.status}).`);
+				return prompts.map(() => null);
+			}
+			const images: { url: string; prompt: string }[] = data.images ?? [];
+			// Match by prompt position; fall back to index ordering returned by the server.
+			return prompts.map((p, i) => {
+				const byPrompt = images.find((img) => img.prompt === p);
+				return byPrompt?.url ?? images[i]?.url ?? null;
+			});
+		} catch (e) {
+			setError(e instanceof Error ? e.message : 'Network error generating posters.');
+			return prompts.map(() => null);
 		}
 	};
 
@@ -58,20 +72,23 @@ const PosterGeneratorModal = ({
 			loading: true,
 		}));
 		setVariants(initial);
-		const results = await Promise.all(prompts.map(callAi));
+		const results = await callAi(prompts);
 		const next = initial.map((v, i) => ({ ...v, url: results[i] ?? '', loading: false }));
 		setVariants(next);
-		if (next.every((v) => !v.url)) setError('Poster generation failed. Please retry.');
+		if (next.every((v) => !v.url) && !error) {
+			setError('Poster generation failed. Please retry.');
+		}
 		setGenerating(false);
 	};
 
 	const refineOne = async (idx: number) => {
 		const v = variants[idx];
 		const prompt = buildPosterPrompt(job, theme, idx, v.refinement);
+		setError(null);
 		setVariants((prev) =>
 			prev.map((p, i) => (i === idx ? { ...p, loading: true, prompt } : p)),
 		);
-		const url = await callAi(prompt);
+		const [url] = await callAi([prompt]);
 		setVariants((prev) =>
 			prev.map((p, i) => (i === idx ? { ...p, url: url ?? p.url, loading: false } : p)),
 		);

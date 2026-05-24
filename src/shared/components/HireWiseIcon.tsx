@@ -5,7 +5,12 @@ type HireWiseIconProps = {
 	className?: string;
 };
 
-/** HireWiseIcon - Minimal HW monogram inside a soft squircle with an animated accent sweep. */
+/**
+ * HireWiseIcon — refined brand mark.
+ * A rounded squircle with a gradient interior, a stylised
+ * "H" carved out of negative space, and an animated accent
+ * spark that orbits the corner.
+ */
 const HireWiseIcon = ({ size = 24, className = '' }: HireWiseIconProps) => (
 	<svg
 		width={size}
@@ -14,68 +19,43 @@ const HireWiseIcon = ({ size = 24, className = '' }: HireWiseIconProps) => (
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
 		className={className}
+		aria-hidden="true"
 	>
 		<defs>
-			<linearGradient id="hw-sweep" x1="0" y1="0" x2="1" y2="1">
+			<linearGradient id="hw-bg" x1="0" y1="0" x2="1" y2="1">
 				<stop offset="0%" stopColor="currentColor" stopOpacity="0.95" />
-				<stop offset="100%" stopColor="currentColor" stopOpacity="0.55" />
+				<stop offset="100%" stopColor="currentColor" stopOpacity="0.65" />
+			</linearGradient>
+			<linearGradient id="hw-stroke" x1="0" y1="0" x2="1" y2="1">
+				<stop offset="0%" stopColor="currentColor" stopOpacity="1" />
+				<stop offset="100%" stopColor="currentColor" stopOpacity="0.5" />
 			</linearGradient>
 		</defs>
 
-		{/* Soft squircle backdrop */}
+		{/* Filled squircle */}
 		<path
-			d="M32 3
-         C50 3 61 14 61 32
-         C61 50 50 61 32 61
-         C14 61 3 50 3 32
-         C3 14 14 3 32 3 Z"
-			fill="currentColor"
-			opacity="0.08"
+			d="M32 4 C50 4 60 14 60 32 C60 50 50 60 32 60 C14 60 4 50 4 32 C4 14 14 4 32 4 Z"
+			fill="url(#hw-bg)"
 		/>
+
+		{/* Subtle inner highlight */}
 		<path
-			d="M32 3
-         C50 3 61 14 61 32
-         C61 50 50 61 32 61
-         C14 61 3 50 3 32
-         C3 14 14 3 32 3 Z"
-			stroke="url(#hw-sweep)"
-			strokeWidth="1.25"
+			d="M32 4 C50 4 60 14 60 32 C60 50 50 60 32 60 C14 60 4 50 4 32 C4 14 14 4 32 4 Z"
+			stroke="url(#hw-stroke)"
+			strokeOpacity="0.45"
+			strokeWidth="1"
 			pathLength="1"
 			className="animate-icon-draw"
 		/>
 
-		{/* H */}
-		<path
-			d="M18 20 L18 44 M18 32 L30 32 M30 20 L30 44"
-			stroke="currentColor"
-			strokeWidth="3"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			pathLength="1"
-			className="animate-icon-check"
-		/>
+		{/* Negative-space H built from three white slabs */}
+		<rect x="18" y="18" width="6" height="28" rx="2" fill="white" />
+		<rect x="40" y="18" width="6" height="28" rx="2" fill="white" />
+		<rect x="24" y="29" width="16" height="6" rx="1.5" fill="white" />
 
-		{/* W */}
-		<path
-			d="M36 20 L40 44 L44 28 L48 44 L52 20"
-			stroke="currentColor"
-			strokeWidth="3"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			fill="none"
-			pathLength="1"
-			className="animate-icon-check"
-		/>
-
-		{/* Accent dot */}
-		<circle
-			cx="52"
-			cy="14"
-			r="2.25"
-			fill="currentColor"
-			opacity="0.7"
-			className="animate-icon-pulse"
-		/>
+		{/* Orbiting accent spark in the top-right */}
+		<circle cx="50" cy="14" r="3" fill="white" opacity="0.95" className="animate-icon-pulse" />
+		<circle cx="50" cy="14" r="6" fill="white" opacity="0.18" />
 	</svg>
 );
 

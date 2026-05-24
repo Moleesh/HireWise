@@ -225,24 +225,32 @@ const JobEditorPage = ({ onNavigate, jobId, mode = 'create' }: JobEditorProps) =
 						{ n: 1, label: 'Paste JD' },
 						{ n: 2, label: 'Details' },
 						{ n: 3, label: 'Summary' },
-					].map((s, i) => (
-						<div key={s.n} className="flex items-center gap-2 flex-1">
-							<button
-								onClick={() => s.n < step && setStep(s.n as Step)}
-								className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
-									step === s.n
-										? 'bg-[var(--accent-bg-subtle)] text-[var(--accent-text)] border border-[var(--accent-border)]'
-										: step > s.n
-											? 'bg-[var(--accent-bg)] text-white cursor-pointer'
-											: 'bg-[var(--btn-ghost-bg)] text-[var(--text-quaternary)]'
-								}`}
-							>
-								{step > s.n ? <Check size={14} /> : s.n}
-								<span className="hidden sm:inline">{s.label}</span>
-							</button>
-							{i < 2 && <div className="flex-1 h-px bg-[var(--border-subtle)]" />}
-						</div>
-					))}
+					].map((s, i) => {
+						// When editing an existing job, every step is reachable so the user
+						// can choose either method (re-paste or edit fields directly).
+						const clickable = !!jobId || s.n < step;
+						return (
+							<div key={s.n} className="flex items-center gap-2 flex-1">
+								<button
+									onClick={() => clickable && setStep(s.n as Step)}
+									disabled={!clickable}
+									className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
+										step === s.n
+											? 'bg-[var(--accent-bg-subtle)] text-[var(--accent-text)] border border-[var(--accent-border)]'
+											: step > s.n
+												? 'bg-[var(--accent-bg)] text-white cursor-pointer'
+												: clickable
+													? 'bg-[var(--btn-ghost-bg)] text-[var(--text-secondary)] hover:bg-[var(--btn-ghost-hover)] cursor-pointer'
+													: 'bg-[var(--btn-ghost-bg)] text-[var(--text-quaternary)]'
+									}`}
+								>
+									{step > s.n ? <Check size={14} /> : s.n}
+									<span className="hidden sm:inline">{s.label}</span>
+								</button>
+								{i < 2 && <div className="flex-1 h-px bg-[var(--border-subtle)]" />}
+							</div>
+						);
+					})}
 				</div>
 			)}
 

@@ -1,9 +1,10 @@
 /** @format */
 
-import { useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import AuthProvider from './features/auth/hooks/AuthProvider';
 import ThemeProvider from './shared/hooks/ThemeProvider';
 import useAuth from './features/auth/hooks/useAuth';
+import useRouter from './shared/hooks/useRouter';
 import Layout from './shared/components/Layout';
 import LoginPage from './features/auth/LoginPage';
 import DashboardPage from './features/dashboard/DashboardPage';
@@ -12,18 +13,11 @@ import JobEditorPage from './features/jobs/JobEditorPage';
 import CandidateListPage from './features/candidates/CandidateListPage';
 import RankingPage from './features/rankings/RankingPage';
 import UserManagementPage from './features/settings/UserManagementPage';
-import type { Page } from './shared/types';
 
-/** AppContent - Inner app content with auth guard and page routing */
+/** AppContent - Inner app with URL-driven routing and auth guard. */
 const AppContent = () => {
 	const { user, loading } = useAuth();
-	const [currentPage, setCurrentPage] = useState<Page>('dashboard');
-	const [pageData, setPageData] = useState<Record<string, string>>({});
-
-	const handleNavigate = (page: Page, data?: Record<string, string>) => {
-		setCurrentPage(page);
-		setPageData(data ?? {});
-	};
+	const { currentPage, pageData, onNavigate } = useRouter();
 
 	if (loading) {
 		return (
@@ -33,20 +27,18 @@ const AppContent = () => {
 		);
 	}
 
-	if (!user) {
-		return <LoginPage />;
-	}
+	if (!user) return <LoginPage />;
 
 	const renderPage = () => {
 		switch (currentPage) {
 			case 'dashboard':
-				return <DashboardPage onNavigate={handleNavigate} />;
+				return <DashboardPage onNavigate={onNavigate} />;
 			case 'jobs':
-				return <JobListPage onNavigate={handleNavigate} />;
+				return <JobListPage onNavigate={onNavigate} />;
 			case 'job-editor':
 				return (
 					<JobEditorPage
-						onNavigate={handleNavigate}
+						onNavigate={onNavigate}
 						jobId={pageData.id}
 						mode={(pageData.mode as 'create' | 'edit' | 'view') ?? 'create'}
 					/>
@@ -58,26 +50,26 @@ const AppContent = () => {
 			case 'settings':
 				return <UserManagementPage />;
 			default:
-				return <DashboardPage onNavigate={handleNavigate} />;
+				return <DashboardPage onNavigate={onNavigate} />;
 		}
 	};
 
 	return (
-		<Layout currentPage={currentPage} onNavigate={handleNavigate}>
+		<Layout currentPage={currentPage} onNavigate={onNavigate}>
 			{renderPage()}
 		</Layout>
 	);
 };
 
-/** App - Root application component with providers */
-const App = () => {
-	return (
+/** App - Root with router + providers. */
+const App = () => (
+	<BrowserRouter>
 		<ThemeProvider>
 			<AuthProvider>
 				<AppContent />
 			</AuthProvider>
 		</ThemeProvider>
-	);
-};
+	</BrowserRouter>
+);
 
 export default App;
