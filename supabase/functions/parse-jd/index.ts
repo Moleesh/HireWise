@@ -19,8 +19,8 @@ const corsHeaders = {
 	'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Client-Info, Apikey',
 };
 
-const AI_URL = 'https://ai.gateway.lovable.dev/v1/chat/completions';
-const MODEL = 'google/gemini-3-flash-preview';
+const AI_URL = Deno.env.get('AI_URL') ?? 'https://ai.gateway.lovable.dev/v1/chat/completions';
+const MODEL = Deno.env.get('AI_MODEL') ?? 'google/gemini-2.0-flash';
 
 const COMMON_SKILLS = [
 	'JavaScript',

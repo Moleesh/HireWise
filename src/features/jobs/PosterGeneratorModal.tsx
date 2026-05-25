@@ -17,7 +17,6 @@ type PosterGeneratorModalProps = {
 
 type Variant = { url: string; prompt: string; refinement: string; loading: boolean };
 
-/** PosterGeneratorModal - Generate 3 AI wall-in poster variations and persist selections. */
 const PosterGeneratorModal = ({
 	isOpen,
 	onClose,
@@ -30,7 +29,6 @@ const PosterGeneratorModal = ({
 	const [generating, setGenerating] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	/** callAi - Calls generate-poster with N prompts; returns parallel URLs (null on per-item failure). */
 	const callAi = async (prompts: string[]): Promise<(string | null)[]> => {
 		try {
 			const res = await fetch(`${SUPABASE_URL}/functions/v1/generate-poster`, {

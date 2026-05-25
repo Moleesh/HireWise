@@ -48,10 +48,25 @@ A next-generation recruiting and talent management platform that revolutionizes 
 | 📋 **Job Management**      | Create, edit, and manage job postings with rich descriptions and custom requirements |
 | 👤 **Candidate Tracking**  | Maintain detailed profiles and track every stage of the application lifecycle        |
 | 🤖 **Smart Ranking**       | AI-driven candidate ranking to find the perfect fit for your positions               |
+| 📑 **Candidate Reports**   | Build reusable Excel-ready reports from filtered candidates and selected columns     |
 | 📊 **Analytics Dashboard** | Key hiring metrics, pipeline overview, and performance analytics                     |
 | 👨‍💼 **User Management**     | Team administration with granular permission controls                                |
 | 🌓 **Theme Switcher**      | Elegant light and dark mode support                                                  |
 | 🔒 **Secure Auth**         | Industry-standard authentication with session management                             |
+
+---
+
+## 📱 Responsive Views
+
+| View           | Behavior                                                                 |
+| -------------- | ------------------------------------------------------------------------ |
+| **Small view** | Mobile-first stacked cards, compact filters, touch-friendly actions       |
+| **Large view** | Wider dashboards, multi-column grids, side-by-side reports, richer tables |
+
+Reports include two focused views:
+
+- **Candidate List View** — filter candidates, preview rows in a table, and export only the selected candidates.
+- **Field Column Report** — choose which table columns are included in the saved workflow and CSV export.
 
 ---
 
@@ -144,6 +159,7 @@ src/
 │   ├── jobs/          # Job management
 │   ├── candidates/    # Candidate management
 │   ├── rankings/      # Candidate ranking
+│   ├── reports/       # Candidate table reports and reusable exports
 │   └── settings/      # User settings
 ├── shared/            # Reusable components & utilities
 │   ├── components/    # Shared UI components

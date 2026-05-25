@@ -2,15 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '../../shared/lib/supabase';
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../../shared/lib/config';
 import { UserPlus, Shield } from 'lucide-react';
 import FrostedCard from '../../shared/components/FrostedCard';
 import ZeroState from '../../shared/components/ZeroState';
 import { ShimmerRow } from '../../shared/components/ShimmerLoader';
-import Modal from '../../shared/components/Modal';
 import CreateUserModal from './CreateUserModal';
+import DeleteUserModal from './DeleteUserModal';
+import ResetPasswordModal from './ResetPasswordModal';
 import UserDirectory from './UserDirectory';
 import type { User as UserType } from '../../shared/types';
+import {
+	postUserAction,
+	toAuthEmail,
+	validateCredentials,
+	validatePassword,
+} from './_private/userAccess';
 
 /** UserManagementPage - User management page with add/delete functionality */
 const UserManagementPage = () => {
@@ -18,6 +24,8 @@ const UserManagementPage = () => {
 	const [loading, setLoading] = useState(true);
 	const [showAddModal, setShowAddModal] = useState(false);
 	const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+	const [passwordUser, setPasswordUser] = useState<UserType | null>(null);
+	const [resetPassword, setResetPassword] = useState('');
 	const [newUser, setNewUser] = useState({ email: '', password: '', role: 'member' });
 	const [saving, setSaving] = useState(false);
 	const [error, setError] = useState('');
@@ -38,28 +46,20 @@ const UserManagementPage = () => {
 	}, []);
 
 	const handleAddUser = async () => {
-		if (!newUser.email || !newUser.password || newUser.password.length < 6) {
-			setError('Username and password (min 6 chars) are required');
+		const validation = validateCredentials(newUser.email, newUser.password);
+		if (validation) {
+			setError(validation);
 			return;
 		}
 		setSaving(true);
 		setError('');
 		try {
-			const apiUrl = `${SUPABASE_URL}/functions/v1/manage-users`;
-			const res = await fetch(apiUrl, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-				},
-				body: JSON.stringify({
-					action: 'create',
-					email: newUser.email,
-					password: newUser.password,
-					role: newUser.role,
-				}),
+			const result = await postUserAction({
+				action: 'create',
+				email: toAuthEmail(newUser.email),
+				password: newUser.password,
+				role: newUser.role,
 			});
-			const result = await res.json();
 			if (result.error) {
 				setError(result.error);
 			} else {
@@ -73,17 +73,35 @@ const UserManagementPage = () => {
 		setSaving(false);
 	};
 
+	const handleResetPassword = async () => {
+		if (!passwordUser) return;
+		const validation = validatePassword(resetPassword);
+		if (validation) {
+			setError(validation);
+			return;
+		}
+		setSaving(true);
+		setError('');
+		try {
+			const result = await postUserAction({
+				action: 'reset-password',
+				user_id: passwordUser.id,
+				password: resetPassword,
+			});
+			if (result.error) setError(result.error);
+			else {
+				setPasswordUser(null);
+				setResetPassword('');
+			}
+		} catch {
+			setError('Failed to update password');
+		}
+		setSaving(false);
+	};
+
 	const handleDeleteUser = async (userId: string) => {
 		try {
-			const apiUrl = `${SUPABASE_URL}/functions/v1/manage-users`;
-			await fetch(apiUrl, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-				},
-				body: JSON.stringify({ action: 'delete', user_id: userId }),
-			});
+			await postUserAction({ action: 'delete', user_id: userId });
 			setUsers((prev) => prev.filter((u) => u.id !== userId));
 		} catch {
 			/* deletion failed silently */
@@ -129,7 +147,14 @@ const UserManagementPage = () => {
 					}
 				/>
 			) : (
-				<UserDirectory users={users} onDelete={(id) => setDeleteConfirm(id)} />
+				<UserDirectory
+					users={users}
+					onDelete={(id) => setDeleteConfirm(id)}
+					onResetPassword={(user) => {
+						setPasswordUser(user);
+						setError('');
+					}}
+				/>
 			)}
 
 			<CreateUserModal
@@ -145,30 +170,26 @@ const UserManagementPage = () => {
 				}}
 			/>
 
-			<Modal
+			<ResetPasswordModal
+				open={Boolean(passwordUser)}
+				user={passwordUser}
+				password={resetPassword}
+				saving={saving}
+				error={error}
+				onPasswordChange={setResetPassword}
+				onSubmit={handleResetPassword}
+				onClose={() => {
+					setPasswordUser(null);
+					setResetPassword('');
+					setError('');
+				}}
+			/>
+
+			<DeleteUserModal
 				open={!!deleteConfirm}
 				onClose={() => setDeleteConfirm(null)}
-				title="Delete User"
-				size="sm"
-			>
-				<p className="text-sm text-[var(--text-secondary)] mb-6">
-					Are you sure you want to delete this user? This action cannot be undone.
-				</p>
-				<div className="flex justify-end gap-3">
-					<button
-						onClick={() => setDeleteConfirm(null)}
-						className="px-4 py-2 rounded-xl text-sm font-medium text-[var(--text-secondary)] bg-[var(--btn-ghost-bg)] hover:bg-[var(--btn-ghost-hover)] transition-all"
-					>
-						Cancel
-					</button>
-					<button
-						onClick={() => deleteConfirm && handleDeleteUser(deleteConfirm)}
-						className="px-4 py-2 rounded-xl text-sm font-medium text-white bg-red-500 hover:bg-red-600 transition-all"
-					>
-						Delete
-					</button>
-				</div>
-			</Modal>
+				onConfirm={() => deleteConfirm && handleDeleteUser(deleteConfirm)}
+			/>
 		</div>
 	);
 };

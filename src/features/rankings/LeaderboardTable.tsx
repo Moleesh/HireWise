@@ -1,8 +1,10 @@
 /** @format */
 
 import FrostedCard from '../../shared/components/FrostedCard';
+import LoadMoreButton from '../../shared/components/LoadMoreButton';
 import ProgressBar from '../../shared/components/ProgressBar';
 import type { Candidate, Ranking } from '../../shared/types';
+import useLazyList from '../../shared/hooks/useLazyList';
 import { getRankBadge } from './_private/helpers';
 
 type LeaderboardTableProps = {
@@ -22,6 +24,11 @@ const LeaderboardTable = ({
 	onSelect,
 }: LeaderboardTableProps) => {
 	const sortedRankings = [...rankings].sort((a, b) => b[sortBy] - a[sortBy]);
+	const lazyRankings = useLazyList(sortedRankings, {
+		initialCount: 10,
+		increment: 10,
+		resetKey: sortBy,
+	});
 
 	return (
 		<div className="space-y-3">
@@ -46,7 +53,7 @@ const LeaderboardTable = ({
 				))}
 			</div>
 
-			{sortedRankings.map((r) => {
+			{lazyRankings.visibleItems.map((r) => {
 				const candidate = candidates.find((c) => c.id === r.candidateId);
 				const badge = getRankBadge(r.rank);
 				return (
@@ -89,6 +96,12 @@ const LeaderboardTable = ({
 					</FrostedCard>
 				);
 			})}
+			{lazyRankings.hasMore && (
+				<LoadMoreButton
+					remainingCount={lazyRankings.remainingCount}
+					onClick={lazyRankings.loadMore}
+				/>
+			)}
 		</div>
 	);
 };

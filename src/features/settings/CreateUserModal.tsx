@@ -1,5 +1,6 @@
 /** @format */
 
+import { ChevronDown } from 'lucide-react';
 import Modal from '../../shared/components/Modal';
 
 type CreateUserModalProps = {
@@ -53,14 +54,20 @@ const CreateUserModal = ({
 					<label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">
 						Role
 					</label>
-					<select
-						value={newUser.role}
-						onChange={(e) => onFieldChange({ role: e.target.value })}
-						className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-ring)] transition-all"
-					>
-						<option value="member">Member</option>
-						<option value="admin">Admin</option>
-					</select>
+					<div className="relative">
+						<select
+							value={newUser.role}
+							onChange={(e) => onFieldChange({ role: e.target.value })}
+							className="h-11 w-full appearance-none bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 pr-10 text-sm text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-ring)] transition-all"
+						>
+							<option value="member">Member</option>
+							<option value="admin">Admin</option>
+						</select>
+						<ChevronDown
+							size={16}
+							className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)]"
+						/>
+					</div>
 				</div>
 				{error && (
 					<div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-red-400 text-sm">

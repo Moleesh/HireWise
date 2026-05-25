@@ -17,21 +17,25 @@ type CandidateTileProps = {
 const CandidateTile = ({ candidate, onSelect, onDownload, onDelete }: CandidateTileProps) => {
 	return (
 		<FrostedCard className="p-4 md:p-5" onClick={() => onSelect(candidate)}>
-			<div className="flex items-start justify-between mb-3">
-				<div className="flex items-center gap-3">
-					<div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[var(--accent-bg-subtle)] border border-[var(--accent-border)] flex items-center justify-center">
-						<User size={16} className="text-[var(--accent-text)]" />
-					</div>
-					<div>
-						<h3 className="text-sm font-semibold text-[var(--text-primary)]">
+			<div className="flex items-start gap-3 mb-3">
+				<div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[var(--accent-bg-subtle)] border border-[var(--accent-border)] flex items-center justify-center shrink-0">
+					<User size={16} className="text-[var(--accent-text)]" />
+				</div>
+				<div className="min-w-0 flex-1 space-y-1">
+					<div className="flex items-start gap-2">
+						<h3 className="min-w-0 flex-1 text-sm font-semibold text-[var(--text-primary)] truncate">
 							{candidate.name ?? 'Unknown'}
 						</h3>
-						<p className="text-xs text-[var(--text-quaternary)]">
-							{candidate.email ?? 'No email'}
+					</div>
+					{candidate.email && (
+						<p className="text-xs text-[var(--text-quaternary)] truncate">
+							{candidate.email}
 						</p>
+					)}
+					<div className="pt-0.5">
+						<StatusBadge status={candidate.status} />
 					</div>
 				</div>
-				<StatusBadge status={candidate.status} />
 			</div>
 
 			<div className="flex items-center gap-3 text-xs text-[var(--text-quaternary)] mb-3 flex-wrap">

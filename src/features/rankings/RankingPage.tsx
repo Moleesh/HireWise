@@ -6,8 +6,8 @@ import { BarChart3, RefreshCw, Trophy, ChevronDown } from 'lucide-react';
 import FrostedCard from '../../shared/components/FrostedCard';
 import ZeroState from '../../shared/components/ZeroState';
 import ProgressBar from '../../shared/components/ProgressBar';
-import { ShimmerRow } from '../../shared/components/ShimmerLoader';
 import LeaderboardTable from './LeaderboardTable';
+import RankingLoading from './RankingLoading';
 import ScoreBreakdownModal from './ScoreBreakdownModal';
 import type { Job, Candidate, Ranking } from '../../shared/types';
 import { calculateScores } from './_private/helpers';
@@ -93,17 +93,7 @@ const RankingPage = ({ preselectedJobId }: RankingPageProps) => {
 
 	const selectedJob = jobs.find((j) => j.id === selectedJobId);
 
-	if (loading) {
-		return (
-			<div className="max-w-7xl mx-auto">
-				<div className="mb-8">
-					<div className="h-8 w-48 bg-[var(--skeleton-bg)] rounded-lg mb-2" />
-					<div className="h-4 w-64 bg-[var(--skeleton-bg)] rounded-lg" />
-				</div>
-				<ShimmerRow rows={5} />
-			</div>
-		);
-	}
+	if (loading) return <RankingLoading />;
 
 	return (
 		<div className="max-w-7xl mx-auto">
@@ -111,7 +101,7 @@ const RankingPage = ({ preselectedJobId }: RankingPageProps) => {
 				<div>
 					<h1 className="text-2xl font-bold text-[var(--text-primary)]">Rankings</h1>
 					<p className="text-[var(--text-tertiary)] mt-1">
-						Score candidates against job descriptions
+						Score candidates against jobs
 					</p>
 				</div>
 			</div>

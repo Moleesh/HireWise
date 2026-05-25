@@ -15,7 +15,7 @@ const StatusBadge = ({ status, size = 'sm' }: StatusBadgeProps) => {
 
 	return (
 		<span
-			className={`inline-flex items-center gap-1.5 rounded-full font-medium ${sizeClass}`}
+			className={`inline-flex items-center gap-1.5 rounded-full font-medium whitespace-nowrap ${sizeClass}`}
 			style={{ backgroundColor: config.bg, color: config.text }}
 		>
 			<span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: config.dot }} />

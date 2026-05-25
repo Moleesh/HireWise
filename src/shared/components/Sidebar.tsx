@@ -19,7 +19,7 @@ const Sidebar = ({ currentPage, onNavigate }: SidebarProps) => {
 	return (
 		<aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-64 bg-[var(--sidebar-bg)] border-r border-[var(--sidebar-border)] flex-col z-40">
 			<div className="p-6 border-b border-[var(--border-subtle)]">
-				<AnimatedLogo size={20} />
+				<AnimatedLogo size={28} />
 			</div>
 			<nav className="flex-1 p-4 space-y-1 overflow-y-auto">
 				{navItems.map((item) => {

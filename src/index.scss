@@ -3,9 +3,10 @@
  * @fileoverview Main stylesheet entry point. Imports theme variables, base styles, animations, and Tailwind directives.
  */
 
-@use './_styles/themes' as themes;
-@use './_styles/base' as base;
-@use './_styles/animations' as animations;
+@use './_styles/app-themes.scss' as themes;
+@use './_styles/base.scss' as base;
+@use './_styles/animations.scss' as animations;
+@use './_styles/ThemeSwitcher.scss' as themeSwitcher;
 @use 'tailwindcss';
 
 @config '../tailwind.config.js';

@@ -12,6 +12,7 @@ import JobListPage from './features/jobs/JobListPage';
 import JobEditorPage from './features/jobs/JobEditorPage';
 import CandidateListPage from './features/candidates/CandidateListPage';
 import RankingPage from './features/rankings/RankingPage';
+import ReportsPage from './features/reports/ReportsPage';
 import UserManagementPage from './features/settings/UserManagementPage';
 
 /** AppContent - Inner app with URL-driven routing and auth guard. */
@@ -47,6 +48,8 @@ const AppContent = () => {
 				return <CandidateListPage />;
 			case 'rankings':
 				return <RankingPage preselectedJobId={pageData.jobId} />;
+			case 'reports':
+				return <ReportsPage />;
 			case 'settings':
 				return <UserManagementPage />;
 			default:

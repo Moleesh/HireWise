@@ -12,7 +12,14 @@ export type ThemeName =
 	| 'paper-ink';
 
 /** Page - Available page routes */
-export type Page = 'dashboard' | 'jobs' | 'job-editor' | 'candidates' | 'rankings' | 'settings';
+export type Page =
+	| 'dashboard'
+	| 'jobs'
+	| 'job-editor'
+	| 'candidates'
+	| 'rankings'
+	| 'reports'
+	| 'settings';
 
 /** JobPoster - AI-generated wall-in poster attached to a job */
 export type JobPoster = {

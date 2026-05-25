@@ -21,7 +21,13 @@ Deno.serve(async (req: Request) => {
 
 		if (action === 'create') {
 			if (!email || !password) {
-				return new Response(JSON.stringify({ error: 'Email and password are required' }), {
+				return new Response(JSON.stringify({ error: 'Username and password are required' }), {
+					status: 400,
+					headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+				});
+			}
+			if (password.length < 6) {
+				return new Response(JSON.stringify({ error: 'Password must be at least 6 characters' }), {
 					status: 400,
 					headers: { ...corsHeaders, 'Content-Type': 'application/json' },
 				});
@@ -63,6 +69,36 @@ Deno.serve(async (req: Request) => {
 					headers: { ...corsHeaders, 'Content-Type': 'application/json' },
 				},
 			);
+		}
+
+		if (action === 'reset-password') {
+			if (!user_id || !password || password.length < 6) {
+				return new Response(JSON.stringify({ error: 'User and 6 character password required' }), {
+					status: 400,
+					headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+				});
+			}
+
+			const updateRes = await fetch(`${SUPABASE_URL}/auth/v1/admin/users/${user_id}`, {
+				method: 'PUT',
+				headers: {
+					apikey: SUPABASE_SERVICE_ROLE_KEY,
+					Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ password }),
+			});
+
+			if (!updateRes.ok) {
+				return new Response(JSON.stringify({ error: 'Failed to update password' }), {
+					status: updateRes.status,
+					headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+				});
+			}
+
+			return new Response(JSON.stringify({ success: true }), {
+				headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+			});
 		}
 
 		if (action === 'delete') {

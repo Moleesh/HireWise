@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../../shared/lib/supabase';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../../../shared/lib/config';
 import { extractResumeText } from '../_private/extractResumeText';
+import { openRawResume, openUrlInNewTab } from '../_private/openCandidateFile';
 import type { Candidate } from '../../../shared/types';
 
 /** useCandidates - Hook for candidate CRUD operations, resume upload, and download */
@@ -91,22 +92,13 @@ const useCandidates = () => {
 				.createSignedUrl(candidate.fileUrl.split('/').pop()!, 60);
 
 			if (!error && data?.signedUrl) {
-				const a = document.createElement('a');
-				a.href = data.signedUrl;
-				a.download = candidate.fileName ?? `${candidate.name}_resume.pdf`;
-				a.click();
+				openUrlInNewTab(data.signedUrl);
 				return;
 			}
 		}
 
 		if (candidate.rawText) {
-			const blob = new Blob([candidate.rawText], { type: 'text/plain' });
-			const url = URL.createObjectURL(blob);
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = `${candidate.name}_resume.txt`;
-			a.click();
-			URL.revokeObjectURL(url);
+			openRawResume(candidate);
 		}
 	};
 

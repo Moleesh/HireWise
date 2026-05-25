@@ -5,8 +5,9 @@ import { supabase } from '../../shared/lib/supabase';
 import { FileText, Users, BarChart3, UserCheck, Briefcase } from 'lucide-react';
 import FrostedCard from '../../shared/components/FrostedCard';
 import CountUp from '../../shared/components/CountUp';
-import { ShimmerCard, ShimmerRow } from '../../shared/components/ShimmerLoader';
 import ActivityFeed from './ActivityFeed';
+import DashboardHero from './DashboardHero';
+import DashboardLoading from './DashboardLoading';
 import type { Page } from '../../shared/types';
 
 type DashboardProps = {
@@ -87,7 +88,7 @@ const DashboardPage = ({ onNavigate }: DashboardProps) => {
 
 	const statCards = [
 		{
-			label: 'Job Descriptions',
+			label: 'Jobs',
 			value: stats.totalJobs,
 			icon: FileText,
 			sub: `${stats.publishedJobs} published`,
@@ -120,36 +121,11 @@ const DashboardPage = ({ onNavigate }: DashboardProps) => {
 		},
 	];
 
-	if (loading) {
-		return (
-			<div className="max-w-7xl mx-auto">
-				<div className="mb-8">
-					<div className="h-8 w-48 bg-[var(--skeleton-bg)] rounded-lg mb-2" />
-					<div className="h-4 w-64 bg-[var(--skeleton-bg)] rounded-lg" />
-				</div>
-				<ShimmerCard count={4} />
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-					<div className="rounded-2xl bg-[var(--card-bg)] border border-[var(--card-border)] p-6">
-						<ShimmerRow rows={4} />
-					</div>
-					<div className="rounded-2xl bg-[var(--card-bg)] border border-[var(--card-border)] p-6">
-						<ShimmerRow rows={4} />
-					</div>
-				</div>
-			</div>
-		);
-	}
+	if (loading) return <DashboardLoading />;
 
 	return (
 		<div className="max-w-7xl mx-auto">
-			<div className="mb-6 md:mb-8">
-				<h1 className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">
-					Dashboard
-				</h1>
-				<p className="text-[var(--text-tertiary)] mt-1 text-sm">
-					Overview of your hiring pipeline
-				</p>
-			</div>
+			<DashboardHero />
 
 			<div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
 				{statCards.map((card) => (
@@ -182,7 +158,7 @@ const DashboardPage = ({ onNavigate }: DashboardProps) => {
 
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
 				<ActivityFeed
-					label="Recent Job Descriptions"
+					label="Recent Jobs"
 					icon={<Briefcase className="w-4 h-4 text-[var(--text-quaternary)] shrink-0" />}
 					items={stats.recentJobs.map((j) => ({
 						id: j.id,

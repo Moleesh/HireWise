@@ -9,7 +9,7 @@ type MobileNavProps = {
 
 /** MobileNav - Bottom navigation bar shown on screens < 768px. */
 const MobileNav = ({ currentPage, onNavigate }: MobileNavProps) => (
-	<nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[var(--sidebar-bg)] border-t border-[var(--sidebar-border)] safe-area-bottom">
+	<nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[var(--sidebar-bg)] border-t border-[var(--sidebar-border)] safe-area-bottom overflow-hidden">
 		<div className="flex items-center justify-around py-2">
 			{navItems.map((item) => {
 				const isActive = currentPage === item.page;

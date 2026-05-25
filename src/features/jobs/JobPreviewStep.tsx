@@ -31,10 +31,10 @@ const JobPreviewStep = ({
 	return (
 		<div className="space-y-6">
 			<FrostedCard className="p-6" hover={false}>
-				<div className="flex items-start justify-between mb-4">
-					<div>
+				<div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+					<div className="min-w-0">
 						<div className="flex items-center gap-2 mb-1">
-							<h2 className="text-2xl font-bold text-[var(--text-primary)]">
+							<h2 className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] leading-tight">
 								{job.title ?? 'Untitled'}
 							</h2>
 							<ClipboardButton text={job.title ?? ''} />

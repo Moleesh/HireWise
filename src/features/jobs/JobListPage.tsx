@@ -4,11 +4,13 @@ import { useState } from 'react';
 import { useJobs } from './hooks/useJobs';
 import { Search, Plus } from 'lucide-react';
 import FrostedCard from '../../shared/components/FrostedCard';
+import LoadMoreButton from '../../shared/components/LoadMoreButton';
 import ZeroState from '../../shared/components/ZeroState';
 import { ShimmerRow } from '../../shared/components/ShimmerLoader';
 import Modal from '../../shared/components/Modal';
 import JobTile from './JobTile';
 import type { Page, Job } from '../../shared/types';
+import useLazyList from '../../shared/hooks/useLazyList';
 
 type JobListProps = {
 	onNavigate: (page: Page, data?: Record<string, string>) => void;
@@ -29,6 +31,11 @@ const JobListPage = ({ onNavigate }: JobListProps) => {
 			(job.department ?? '').toLowerCase().includes(search.toLowerCase());
 		const matchesStatus = statusFilter === 'all' || job.status === statusFilter;
 		return matchesSearch && matchesStatus;
+	});
+	const lazyJobs = useLazyList(filtered, {
+		initialCount: 8,
+		increment: 8,
+		resetKey: `${search}:${statusFilter}`,
 	});
 
 	const statusCounts = {
@@ -64,10 +71,10 @@ const JobListPage = ({ onNavigate }: JobListProps) => {
 		<div className="max-w-7xl mx-auto">
 			<div className="flex items-center justify-between mb-8">
 				<div>
-					<h1 className="text-2xl font-bold text-[var(--text-primary)]">
-						Job Descriptions
-					</h1>
-					<p className="text-[var(--text-tertiary)] mt-1">Manage your hiring pipeline</p>
+					<h1 className="text-2xl font-bold text-[var(--text-primary)]">Jobs</h1>
+					<p className="hidden sm:block text-[var(--text-tertiary)] mt-1">
+						Manage your hiring pipeline
+					</p>
 				</div>
 				<button
 					onClick={() => onNavigate('job-editor')}
@@ -77,8 +84,8 @@ const JobListPage = ({ onNavigate }: JobListProps) => {
 				</button>
 			</div>
 
-			<div className="flex flex-col sm:flex-row gap-4 mb-6">
-				<div className="relative flex-1">
+			<div className="flex flex-col xl:flex-row gap-3 xl:gap-4 mb-6">
+				<div className="relative w-full xl:flex-1">
 					<Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-quaternary)]" />
 					<input
 						type="text"
@@ -88,12 +95,12 @@ const JobListPage = ({ onNavigate }: JobListProps) => {
 						className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-quaternary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-ring)] transition-all"
 					/>
 				</div>
-				<div className="flex gap-2">
+				<div className="flex gap-2 overflow-x-auto pb-1 xl:pb-0 xl:overflow-visible">
 					{(['all', 'draft', 'published', 'filled'] as const).map((status) => (
 						<button
 							key={status}
 							onClick={() => setStatusFilter(status)}
-							className={`px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+							className={`shrink-0 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
 								statusFilter === status
 									? 'bg-[var(--accent-bg-subtle)] text-[var(--accent-text)] border border-[var(--accent-border)]'
 									: 'bg-[var(--btn-ghost-bg)] text-[var(--text-tertiary)] hover:bg-[var(--btn-ghost-hover)] border border-transparent'
@@ -115,7 +122,7 @@ const JobListPage = ({ onNavigate }: JobListProps) => {
 			) : filtered.length === 0 ? (
 				<ZeroState
 					icon={Search}
-					title={search ? 'No matching jobs' : 'No job descriptions yet'}
+					title={search ? 'No matching jobs' : 'No jobs yet'}
 					description={
 						search
 							? 'Try adjusting your search'
@@ -134,7 +141,7 @@ const JobListPage = ({ onNavigate }: JobListProps) => {
 				/>
 			) : (
 				<div className="space-y-3">
-					{filtered.map((job) => (
+					{lazyJobs.visibleItems.map((job) => (
 						<JobTile
 							key={job.id}
 							job={job}
@@ -150,6 +157,12 @@ const JobListPage = ({ onNavigate }: JobListProps) => {
 							}}
 						/>
 					))}
+					{lazyJobs.hasMore && (
+						<LoadMoreButton
+							remainingCount={lazyJobs.remainingCount}
+							onClick={lazyJobs.loadMore}
+						/>
+					)}
 				</div>
 			)}
 

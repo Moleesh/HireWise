@@ -16,8 +16,8 @@ const corsHeaders = {
 	'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Client-Info, Apikey',
 };
 
-const AI_URL = 'https://ai.gateway.lovable.dev/v1/chat/completions';
-const MODEL = 'google/gemini-3.1-flash-image-preview';
+const AI_URL = Deno.env.get('AI_URL') ?? 'https://ai.gateway.lovable.dev/v1/chat/completions';
+const MODEL = Deno.env.get('AI_IMAGE_MODEL') ?? 'google/gemini-2.0-flash-preview-image-generation';
 
 async function generateOne(prompt: string, key: string) {
 	const res = await fetch(AI_URL, {

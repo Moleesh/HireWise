@@ -14,7 +14,7 @@ const AnimatedLogo = ({ size = 24, showText = true }: AnimatedLogoProps) => (
 			<HireWiseIcon size={size} className="text-[var(--accent-text)]" />
 		</div>
 		{showText && (
-			<h1 className="text-lg font-bold text-[var(--text-primary)] tracking-tight">
+			<h1 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">
 				Hire
 				<span className="bg-gradient-to-r from-[var(--accent-gradient-from)] to-[var(--accent-gradient-to)] bg-clip-text text-transparent animate-gradient-sweep bg-[length:200%_200%]">
 					Wise

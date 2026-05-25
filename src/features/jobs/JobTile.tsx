@@ -37,36 +37,45 @@ const JobTile = ({
 	onMarkFilled,
 	onDelete,
 }: JobTileProps) => {
+	const metaItems = [
+		job.department,
+		job.location,
+		job.employmentType,
+		job.experienceLevel,
+		(job.skills?.length ?? 0) > 0 ? `${job.skills!.length} skills` : '',
+	].filter(Boolean);
+
 	return (
 		<FrostedCard
-			className="p-4"
+			className="p-4 sm:p-5"
 			onClick={() => onNavigate('job-editor', { id: job.id, mode: 'view' })}
 		>
-			<div className="flex items-center justify-between">
+			<div className="flex items-start justify-between gap-3">
 				<div className="flex-1 min-w-0">
-					<div className="flex items-center gap-3 mb-2">
-						<h3 className="text-sm font-semibold text-[var(--text-primary)] truncate">
+					<div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3 mb-3">
+						<h3 className="text-base sm:text-sm font-semibold text-[var(--text-primary)] truncate">
 							{job.title ?? 'Untitled'}
 						</h3>
-						<StatusBadge status={job.status} />
+						<div className="shrink-0">
+							<StatusBadge status={job.status} />
+						</div>
 					</div>
-					<div className="flex items-center gap-4 text-xs text-[var(--text-quaternary)]">
-						{job.department && <span>{job.department}</span>}
-						{job.location && <span>{job.location}</span>}
-						{job.employmentType && (
-							<span className="capitalize">{job.employmentType}</span>
-						)}
-						{job.experienceLevel && (
-							<span className="capitalize">{job.experienceLevel}</span>
-						)}
-						{(job.skills?.length ?? 0) > 0 && <span>{job.skills!.length} skills</span>}
-						<span className="flex items-center gap-1">
+					<div className="flex flex-wrap gap-2 text-xs text-[var(--text-quaternary)]">
+						{metaItems.slice(0, 4).map((item) => (
+							<span
+								key={item}
+								className="px-2 py-1 rounded-lg bg-[var(--btn-ghost-bg)] capitalize"
+							>
+								{item}
+							</span>
+						))}
+						<span className="flex items-center gap-1 px-2 py-1 rounded-lg bg-[var(--btn-ghost-bg)]">
 							<Clock size={10} />
 							{getAge(job.createdAt)}
 						</span>
 					</div>
 				</div>
-				<div className="flex items-center gap-2 ml-4">
+				<div className="flex items-start gap-2 shrink-0">
 					<div className="relative">
 						<button
 							onClick={(e) => {
@@ -74,6 +83,7 @@ const JobTile = ({
 								onToggleMenu();
 							}}
 							className="p-2 rounded-xl text-[var(--text-tertiary)] hover:text-[var(--text-secondary)] hover:bg-[var(--btn-ghost-hover)] transition-all"
+							aria-label={`Open actions for ${job.title ?? 'job'}`}
 						>
 							<MoreVertical size={16} />
 						</button>
