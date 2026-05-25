@@ -11,7 +11,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@v5
+              uses: actions/checkout@v4
               with:
                   fetch-depth: 0
             - name: Setup Bun
@@ -25,7 +25,7 @@ jobs:
             - name: Build project
               run: bun run build
             - name: Upload to Pages
-              uses: actions/upload-pages-artifact@v5
+              uses: actions/upload-pages-artifact@v6
               with:
                   path: dist/
     deploy:
@@ -42,9 +42,9 @@ jobs:
             url: ${{ steps.deployment.outputs.page_url }}
         steps:
             - name: Download artifact
-              uses: actions/download-artifact@v4
+              uses: actions/download-artifact@v5
             - name: Setup Pages
-              uses: actions/configure-pages@v5
+              uses: actions/configure-pages@v6
             - name: Deploy to GitHub Pages
               id: deployment
-              uses: actions/deploy-pages@v5
+              uses: actions/deploy-pages@v6
