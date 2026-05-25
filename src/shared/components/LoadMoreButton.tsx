@@ -25,7 +25,10 @@ const LoadMoreButton = ({ remainingCount, onClick }: LoadMoreButtonProps) => {
 	}, [onClick]);
 
 	return (
-		<div ref={markerRef} className="flex justify-center pt-2 text-xs text-[var(--text-quaternary)]">
+		<div
+			ref={markerRef}
+			className="flex justify-center pt-2 text-xs text-[var(--text-quaternary)]"
+		>
 			Loading {remainingCount} more…
 		</div>
 	);

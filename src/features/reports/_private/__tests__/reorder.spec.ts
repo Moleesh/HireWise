@@ -5,11 +5,7 @@ import { moveItem } from '../reorder';
 
 describe('moveItem', () => {
 	it('moves an item to the requested position', () => {
-		expect(moveItem(['name', 'email', 'status'], 0, 2)).toEqual([
-			'email',
-			'status',
-			'name',
-		]);
+		expect(moveItem(['name', 'email', 'status'], 0, 2)).toEqual(['email', 'status', 'name']);
 	});
 
 	it('keeps the list unchanged for invalid indexes', () => {

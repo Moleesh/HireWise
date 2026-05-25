@@ -11,13 +11,7 @@ type ReportSetupCardProps = {
 	saved: boolean;
 };
 
-const ReportSetupCard = ({
-	canSave,
-	name,
-	onNameChange,
-	onSave,
-	saved,
-}: ReportSetupCardProps) => (
+const ReportSetupCard = ({ canSave, name, onNameChange, onSave, saved }: ReportSetupCardProps) => (
 	<FrostedCard className="p-4 md:p-5" hover={false}>
 		<div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3">
 			<div>

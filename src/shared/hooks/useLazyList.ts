@@ -9,7 +9,7 @@ type UseLazyListOptions = {
 };
 
 /** useLazyList - Incrementally exposes large lists to keep pages responsive. */
-const useLazyList = <T,>(
+const useLazyList = <T>(
 	items: T[],
 	{ initialCount = 12, increment = 12, resetKey = '' }: UseLazyListOptions = {},
 ) => {

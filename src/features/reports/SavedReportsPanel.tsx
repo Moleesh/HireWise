@@ -26,52 +26,60 @@ const SavedReportsPanel = ({
 
 	return (
 		<FrostedCard className="p-4 md:p-5" hover={false}>
-		<h2 className="text-sm font-semibold text-[var(--text-primary)] mb-1">Saved Reports</h2>
-		<p className="text-xs text-[var(--text-tertiary)] mb-4">Reuse common exports</p>
-		{reports.length === 0 ? (
-			<p className="text-sm text-[var(--text-tertiary)]">No saved reports yet.</p>
-		) : (
-			<div className="space-y-2">
-				{lazyReports.visibleItems.map((report) => (
-					<div
-						key={report.id}
-						className="flex items-center gap-2 rounded-xl bg-[var(--input-bg)] border border-[var(--border-subtle)] p-2"
-					>
-						<button onClick={() => onLoadReport(report)} className="min-w-0 flex-1 text-left">
-							<span className="block text-sm font-medium text-[var(--text-primary)] truncate">
-								{report.name}
-							</span>
-							<span className="block text-xs text-[var(--text-quaternary)]">
-								{report.candidateIds.length} candidates, {report.fieldKeys.length} fields
-							</span>
-						</button>
-						<button
-							onClick={() => onSetDefaultReport(report.id)}
-							aria-label={`Set ${report.name} as default`}
-							className="p-2 rounded-lg text-[var(--text-tertiary)] hover:text-yellow-400 hover:bg-yellow-500/10 transition-all"
+			<h2 className="text-sm font-semibold text-[var(--text-primary)] mb-1">Saved Reports</h2>
+			<p className="text-xs text-[var(--text-tertiary)] mb-4">Reuse common exports</p>
+			{reports.length === 0 ? (
+				<p className="text-sm text-[var(--text-tertiary)]">No saved reports yet.</p>
+			) : (
+				<div className="space-y-2">
+					{lazyReports.visibleItems.map((report) => (
+						<div
+							key={report.id}
+							className="flex items-center gap-2 rounded-xl bg-[var(--input-bg)] border border-[var(--border-subtle)] p-2"
 						>
-							<Star
-								size={14}
-								className={report.id === defaultReportId ? 'fill-current text-yellow-400' : ''}
-							/>
-						</button>
-						<button
-							onClick={() => onDeleteReport(report.id)}
-							aria-label={`Delete ${report.name}`}
-							className="p-2 rounded-lg text-[var(--text-tertiary)] hover:text-red-400 hover:bg-red-500/10 transition-all"
-						>
-							<Trash2 size={14} />
-						</button>
-					</div>
-				))}
-				{lazyReports.hasMore && (
-					<LoadMoreButton
-						remainingCount={lazyReports.remainingCount}
-						onClick={lazyReports.loadMore}
-					/>
-				)}
-			</div>
-		)}
+							<button
+								onClick={() => onLoadReport(report)}
+								className="min-w-0 flex-1 text-left"
+							>
+								<span className="block text-sm font-medium text-[var(--text-primary)] truncate">
+									{report.name}
+								</span>
+								<span className="block text-xs text-[var(--text-quaternary)]">
+									{report.candidateIds.length} candidates,{' '}
+									{report.fieldKeys.length} fields
+								</span>
+							</button>
+							<button
+								onClick={() => onSetDefaultReport(report.id)}
+								aria-label={`Set ${report.name} as default`}
+								className="p-2 rounded-lg text-[var(--text-tertiary)] hover:text-yellow-400 hover:bg-yellow-500/10 transition-all"
+							>
+								<Star
+									size={14}
+									className={
+										report.id === defaultReportId
+											? 'fill-current text-yellow-400'
+											: ''
+									}
+								/>
+							</button>
+							<button
+								onClick={() => onDeleteReport(report.id)}
+								aria-label={`Delete ${report.name}`}
+								className="p-2 rounded-lg text-[var(--text-tertiary)] hover:text-red-400 hover:bg-red-500/10 transition-all"
+							>
+								<Trash2 size={14} />
+							</button>
+						</div>
+					))}
+					{lazyReports.hasMore && (
+						<LoadMoreButton
+							remainingCount={lazyReports.remainingCount}
+							onClick={lazyReports.loadMore}
+						/>
+					)}
+				</div>
+			)}
 		</FrostedCard>
 	);
 };

@@ -8,7 +8,9 @@ export const jobCodeFromId = (id: string) => {
 		hash ^= char.charCodeAt(0);
 		hash = Math.imul(hash, 16777619);
 	}
-	return String(hash >>> 0).padStart(10, '0').slice(0, 8);
+	return String(hash >>> 0)
+		.padStart(10, '0')
+		.slice(0, 8);
 };
 
 export const findJobByCode = <T extends { id: string }>(jobs: T[], code: string) =>

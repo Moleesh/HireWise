@@ -10,16 +10,10 @@ type CandidateListHeaderProps = {
 };
 
 /** CandidateListHeader - Page title and resume upload entry point. */
-const CandidateListHeader = ({
-	fileInputRef,
-	uploading,
-	onUpload,
-}: CandidateListHeaderProps) => (
+const CandidateListHeader = ({ fileInputRef, uploading, onUpload }: CandidateListHeaderProps) => (
 	<div className="flex items-center justify-between mb-6 md:mb-8">
 		<div>
-			<h1 className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">
-				Candidates
-			</h1>
+			<h1 className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">Candidates</h1>
 			<p className="text-[var(--text-tertiary)] mt-1 text-sm">
 				Manage your candidate pipeline
 			</p>

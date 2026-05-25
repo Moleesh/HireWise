@@ -58,8 +58,8 @@ A next-generation recruiting and talent management platform that revolutionizes 
 
 ## 📱 Responsive Views
 
-| View           | Behavior                                                                 |
-| -------------- | ------------------------------------------------------------------------ |
+| View           | Behavior                                                                  |
+| -------------- | ------------------------------------------------------------------------- |
 | **Small view** | Mobile-first stacked cards, compact filters, touch-friendly actions       |
 | **Large view** | Wider dashboards, multi-column grids, side-by-side reports, richer tables |
 

@@ -5,7 +5,13 @@ import type { Candidate } from '../../../../shared/types';
 import { filterCandidates } from '../filter';
 
 const candidates = [
-	{ id: '1', name: 'Asha Rao', email: 'asha@example.com', skills: ['React'], status: 'available' },
+	{
+		id: '1',
+		name: 'Asha Rao',
+		email: 'asha@example.com',
+		skills: ['React'],
+		status: 'available',
+	},
 	{ id: '2', name: 'Ben Lee', email: 'ben@example.com', skills: ['Python'], status: 'offered' },
 ] as Candidate[];
 

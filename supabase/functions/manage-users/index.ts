@@ -21,16 +21,22 @@ Deno.serve(async (req: Request) => {
 
 		if (action === 'create') {
 			if (!email || !password) {
-				return new Response(JSON.stringify({ error: 'Username and password are required' }), {
-					status: 400,
-					headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-				});
+				return new Response(
+					JSON.stringify({ error: 'Username and password are required' }),
+					{
+						status: 400,
+						headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+					},
+				);
 			}
 			if (password.length < 6) {
-				return new Response(JSON.stringify({ error: 'Password must be at least 6 characters' }), {
-					status: 400,
-					headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-				});
+				return new Response(
+					JSON.stringify({ error: 'Password must be at least 6 characters' }),
+					{
+						status: 400,
+						headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+					},
+				);
 			}
 
 			// Create user via admin API
@@ -73,10 +79,13 @@ Deno.serve(async (req: Request) => {
 
 		if (action === 'reset-password') {
 			if (!user_id || !password || password.length < 6) {
-				return new Response(JSON.stringify({ error: 'User and 6 character password required' }), {
-					status: 400,
-					headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-				});
+				return new Response(
+					JSON.stringify({ error: 'User and 6 character password required' }),
+					{
+						status: 400,
+						headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+					},
+				);
 			}
 
 			const updateRes = await fetch(`${SUPABASE_URL}/auth/v1/admin/users/${user_id}`, {

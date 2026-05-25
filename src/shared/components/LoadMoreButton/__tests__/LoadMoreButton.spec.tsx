@@ -16,7 +16,10 @@ class MockIntersectionObserver {
 	unobserve = vi.fn();
 	takeRecords = vi.fn(() => []);
 	trigger(isIntersecting: boolean) {
-		this.callback([{ isIntersecting } as IntersectionObserverEntry], this as unknown as IntersectionObserver);
+		this.callback(
+			[{ isIntersecting } as IntersectionObserverEntry],
+			this as unknown as IntersectionObserver,
+		);
 	}
 }
 

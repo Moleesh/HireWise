@@ -23,7 +23,9 @@ const ReportsPage = () => {
 				canExport={exportCandidates.length > 0 && report.selectedFields.length > 0}
 				defaultReportId={report.defaultReportId}
 				onConfigure={() => setConfigOpen(true)}
-				onExport={() => downloadCsv(report.reportName, exportCandidates, report.selectedFields)}
+				onExport={() =>
+					downloadCsv(report.reportName, exportCandidates, report.selectedFields)
+				}
 				onLoadReport={report.loadReport}
 				onSetDefaultReport={report.setDefaultReport}
 				reports={report.savedReports}

@@ -57,7 +57,8 @@ const previousTitle = (currentTitle: string, index: number): string => {
 const buildProfileUrl = (site: string, firstName: string, lastName: string) => {
 	const first = firstName.toLowerCase();
 	const last = lastName.toLowerCase();
-	if (site === 'linkedin') return `https://linkedin.com/in/${first}${last}${Math.floor(Math.random() * 99)}`;
+	if (site === 'linkedin')
+		return `https://linkedin.com/in/${first}${last}${Math.floor(Math.random() * 99)}`;
 	if (site === 'indeed')
 		return `https://indeed.com/resume/${first}-${last}-${Math.random().toString(36).slice(2, 6)}`;
 	return `https://glassdoor.com/profile/${first}${last}${Math.floor(Math.random() * 99)}`;

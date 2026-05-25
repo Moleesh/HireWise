@@ -40,7 +40,9 @@ const FieldReportTable = ({
 						<tr
 							key={field.key}
 							draggable
-							onDragStart={(event) => event.dataTransfer.setData('fieldKey', field.key)}
+							onDragStart={(event) =>
+								event.dataTransfer.setData('fieldKey', field.key)
+							}
 							onDragOver={(event) => event.preventDefault()}
 							onDrop={(event) => {
 								event.preventDefault();

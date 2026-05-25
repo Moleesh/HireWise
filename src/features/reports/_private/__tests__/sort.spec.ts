@@ -22,16 +22,16 @@ const fields: ReportField[] = [
 
 describe('sortCandidates', () => {
 	it('sorts text fields ascending and descending', () => {
-		expect(sortCandidates(candidates, fields, { fieldKey: 'name', direction: 'asc' }).map((c) => c.name)).toEqual([
-			'Asha',
-			'Ben',
-			'Zara',
-		]);
-		expect(sortCandidates(candidates, fields, { fieldKey: 'name', direction: 'desc' }).map((c) => c.name)).toEqual([
-			'Zara',
-			'Ben',
-			'Asha',
-		]);
+		expect(
+			sortCandidates(candidates, fields, { fieldKey: 'name', direction: 'asc' }).map(
+				(c) => c.name,
+			),
+		).toEqual(['Asha', 'Ben', 'Zara']);
+		expect(
+			sortCandidates(candidates, fields, { fieldKey: 'name', direction: 'desc' }).map(
+				(c) => c.name,
+			),
+		).toEqual(['Zara', 'Ben', 'Asha']);
 	});
 
 	it('sorts numeric strings naturally', () => {

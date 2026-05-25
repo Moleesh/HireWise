@@ -1,12 +1,7 @@
 /** @format */
 
 import { describe, expect, it } from 'vitest';
-import {
-	displayUsername,
-	toAuthEmail,
-	validateCredentials,
-	validatePassword,
-} from '../userAccess';
+import { displayUsername, toAuthEmail, validateCredentials, validatePassword } from '../userAccess';
 
 describe('user access helpers', () => {
 	it('converts usernames to auth-safe emails', () => {

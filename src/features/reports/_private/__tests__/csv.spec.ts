@@ -26,9 +26,7 @@ describe('escapeCsvValue', () => {
 
 describe('buildCsv', () => {
 	it('builds an Excel-friendly CSV with selected fields', () => {
-		expect(buildCsv([candidate], fields)).toBe(
-			'"Name","Skills"\n"Asha ""Ace""","react, node"',
-		);
+		expect(buildCsv([candidate], fields)).toBe('"Name","Skills"\n"Asha ""Ace""","react, node"');
 	});
 
 	it('includes only the requested columns', () => {

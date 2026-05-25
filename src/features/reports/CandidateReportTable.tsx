@@ -47,7 +47,9 @@ const CandidateReportTable = ({ candidates, fields, search }: CandidateReportTab
 					<p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent-text)] mb-1">
 						Report Preview
 					</p>
-					<h2 className="text-lg font-bold text-[var(--text-primary)]">Candidate Table</h2>
+					<h2 className="text-lg font-bold text-[var(--text-primary)]">
+						Candidate Table
+					</h2>
 					<p className="text-sm text-[var(--text-tertiary)] mt-1">
 						{candidates.length} filtered rows · sorted by {sort.fieldKey}
 					</p>
@@ -61,7 +63,10 @@ const CandidateReportTable = ({ candidates, fields, search }: CandidateReportTab
 					<thead className="sticky top-0 z-10 bg-[var(--input-bg)] text-[var(--text-tertiary)]">
 						<tr>
 							{visibleFields.map((field) => (
-								<th key={field.key} className="px-4 py-3 text-xs font-bold uppercase tracking-wider whitespace-nowrap">
+								<th
+									key={field.key}
+									className="px-4 py-3 text-xs font-bold uppercase tracking-wider whitespace-nowrap"
+								>
 									<button
 										onClick={() => toggleSort(field.key)}
 										className="flex items-center gap-2 hover:text-[var(--accent-text)] transition-colors"
@@ -86,7 +91,10 @@ const CandidateReportTable = ({ candidates, fields, search }: CandidateReportTab
 								className="text-[var(--text-secondary)] odd:bg-white/[0.02] hover:bg-[var(--accent-bg-subtle)] transition-colors"
 							>
 								{visibleFields.map((field) => (
-									<td key={field.key} className="px-4 py-3.5 max-w-72 truncate align-middle">
+									<td
+										key={field.key}
+										className="px-4 py-3.5 max-w-72 truncate align-middle"
+									>
 										{field.value(candidate) || '—'}
 									</td>
 								))}
@@ -96,7 +104,10 @@ const CandidateReportTable = ({ candidates, fields, search }: CandidateReportTab
 				</table>
 			</div>
 			{lazyRows.hasMore && (
-				<LoadMoreButton remainingCount={lazyRows.remainingCount} onClick={lazyRows.loadMore} />
+				<LoadMoreButton
+					remainingCount={lazyRows.remainingCount}
+					onClick={lazyRows.loadMore}
+				/>
 			)}
 		</FrostedCard>
 	);

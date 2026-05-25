@@ -1,23 +1,41 @@
 /** @format */
 
 @keyframes shimmer {
-	from { transform: translateX(-100%); }
-	to { transform: translateX(100%); }
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(100%);
+	}
 }
 
 @keyframes float {
-	0%, 100% { transform: translateY(0px); }
-	50% { transform: translateY(-8px); }
+	0%,
+	100% {
+		transform: translateY(0px);
+	}
+	50% {
+		transform: translateY(-8px);
+	}
 }
 
 @keyframes pulse-slow {
-	0%, 100% { opacity: 0.3; }
-	50% { opacity: 0.6; }
+	0%,
+	100% {
+		opacity: 0.3;
+	}
+	50% {
+		opacity: 0.6;
+	}
 }
 
 @keyframes fade-in {
-	from { opacity: 0; }
-	to { opacity: 1; }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 @keyframes scale-in {
