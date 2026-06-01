@@ -5,10 +5,10 @@ import type { Page } from '../../../types';
 
 /** navItems - Mobile bottom navigation items with page, label, and icon. */
 export const navItems: { page: Page; label: string; icon: typeof LayoutDashboard }[] = [
-	{ page: 'dashboard', label: 'Home', icon: LayoutDashboard },
-	{ page: 'jobs', label: 'Jobs', icon: FileText },
-	{ page: 'candidates', label: 'People', icon: Users },
-	{ page: 'rankings', label: 'Rank', icon: BarChart3 },
-	{ page: 'reports', label: 'Reports', icon: Sheet },
-	{ page: 'settings', label: 'Admin', icon: Settings },
+    { page: 'dashboard', label: 'Home', icon: LayoutDashboard },
+    { page: 'jobs', label: 'Jobs', icon: FileText },
+    { page: 'candidates', label: 'People', icon: Users },
+    { page: 'rankings', label: 'Rank', icon: BarChart3 },
+    { page: 'reports', label: 'Reports', icon: Sheet },
+    { page: 'settings', label: 'Admin', icon: Settings },
 ];

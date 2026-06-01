@@ -17,62 +17,62 @@ import UserManagementPage from './features/settings/UserManagementPage';
 
 /** AppContent - Inner app with URL-driven routing and auth guard. */
 const AppContent = () => {
-	const { user, loading } = useAuth();
-	const { currentPage, pageData, onNavigate } = useRouter();
+    const { user, loading } = useAuth();
+    const { currentPage, pageData, onNavigate } = useRouter();
 
-	if (loading) {
-		return (
-			<div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center">
-				<div className="w-8 h-8 border-2 border-[var(--accent-bg)] border-t-transparent rounded-full animate-spin" />
-			</div>
-		);
-	}
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center">
+                <div className="w-8 h-8 border-2 border-[var(--accent-bg)] border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
+    }
 
-	if (!user) return <LoginPage />;
+    if (!user) return <LoginPage />;
 
-	const renderPage = () => {
-		switch (currentPage) {
-			case 'dashboard':
-				return <DashboardPage onNavigate={onNavigate} />;
-			case 'jobs':
-				return <JobListPage onNavigate={onNavigate} />;
-			case 'job-editor':
-				return (
-					<JobEditorPage
-						onNavigate={onNavigate}
-						jobId={pageData.id}
-						mode={(pageData.mode as 'create' | 'edit' | 'view') ?? 'create'}
-					/>
-				);
-			case 'candidates':
-				return <CandidateListPage />;
-			case 'rankings':
-				return <RankingPage preselectedJobId={pageData.jobId} />;
-			case 'reports':
-				return <ReportsPage />;
-			case 'settings':
-				return <UserManagementPage />;
-			default:
-				return <DashboardPage onNavigate={onNavigate} />;
-		}
-	};
+    const renderPage = () => {
+        switch (currentPage) {
+            case 'dashboard':
+                return <DashboardPage onNavigate={onNavigate} />;
+            case 'jobs':
+                return <JobListPage onNavigate={onNavigate} />;
+            case 'job-editor':
+                return (
+                    <JobEditorPage
+                        onNavigate={onNavigate}
+                        jobId={pageData.id}
+                        mode={(pageData.mode as 'create' | 'edit' | 'view') ?? 'create'}
+                    />
+                );
+            case 'candidates':
+                return <CandidateListPage />;
+            case 'rankings':
+                return <RankingPage preselectedJobId={pageData.jobId} />;
+            case 'reports':
+                return <ReportsPage />;
+            case 'settings':
+                return <UserManagementPage />;
+            default:
+                return <DashboardPage onNavigate={onNavigate} />;
+        }
+    };
 
-	return (
-		<Layout currentPage={currentPage} onNavigate={onNavigate}>
-			{renderPage()}
-		</Layout>
-	);
+    return (
+        <Layout currentPage={currentPage} onNavigate={onNavigate}>
+            {renderPage()}
+        </Layout>
+    );
 };
 
 /** App - Root with router + providers. */
 const App = () => (
-	<BrowserRouter basename="/HireWise">
-		<ThemeProvider>
-			<AuthProvider>
-				<AppContent />
-			</AuthProvider>
-		</ThemeProvider>
-	</BrowserRouter>
+    <BrowserRouter basename="/HireWise">
+        <ThemeProvider>
+            <AuthProvider>
+                <AppContent />
+            </AuthProvider>
+        </ThemeProvider>
+    </BrowserRouter>
 );
 
 export default App;

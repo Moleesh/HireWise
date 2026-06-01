@@ -4,11 +4,11 @@ import { createContext } from 'react';
 import type { ThemeName } from '../types';
 
 export type ThemeContextValue = {
-	theme: ThemeName;
-	setTheme: (theme: ThemeName) => void;
+    theme: ThemeName;
+    setTheme: (theme: ThemeName) => void;
 };
 
 export const ThemeContext = createContext<ThemeContextValue>({
-	theme: 'midnight-emerald',
-	setTheme: () => {},
+    theme: 'midnight-emerald',
+    setTheme: () => {},
 });
