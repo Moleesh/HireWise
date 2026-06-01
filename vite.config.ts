@@ -5,7 +5,7 @@ import { githubPagesFallback } from './vite.github-pages.js';
 import { writeFileSync } from 'fs';
 
 export default defineConfig({
-	base: '/HireWise',
+	base: '/HireWise/',
 	plugins: [
 		react(),
 		githubPagesFallback(),
