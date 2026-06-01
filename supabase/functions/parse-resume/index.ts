@@ -6,9 +6,9 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
  * parse-resume
  *
  * Receives extracted text from a resume (PDF/DOCX/TXT) — the client does file
- * extraction with pdfjs-dist / mammoth before calling this. Uses AI
- * Gateway with tool calling to extract structured candidate data. Falls back to
- * heuristic regex when the key is missing or AI errors.
+ * extraction with pdfjs-dist / mammoth before calling this. Uses OpenRouter
+ * with tool calling to extract structured candidate data. Falls back to
+ * heuristic regex when OPENROUTER_API_KEY/API_KEY is missing or AI errors.
  */
 
 const corsHeaders = {
@@ -17,8 +17,8 @@ const corsHeaders = {
 	'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Client-Info, Apikey',
 };
 
-const AI_URL = Deno.env.get('AI_URL') ?? 'https://ai.gateway.lovable.dev/v1/chat/completions';
-const MODEL = Deno.env.get('AI_MODEL') ?? 'google/gemini-2.0-flash';
+const AI_URL = Deno.env.get('AI_URL') ?? 'https://openrouter.ai/api/v1/chat/completions';
+const MODEL = Deno.env.get('AI_MODEL') ?? 'openrouter/free';
 
 interface ParseRequest {
 	text: string;
@@ -53,8 +53,8 @@ const fallback = (text: string, file_name?: string) => {
 };
 
 const callAi = async (text: string, fileName: string | undefined) => {
-	const key = Deno.env.get('API_KEY');
-	if (!key) throw new Error('no key');
+	const key = Deno.env.get('OPENROUTER_API_KEY') ?? Deno.env.get('API_KEY');
+	if (!key) throw new Error('OPENROUTER_API_KEY missing');
 	const tool = {
 		type: 'function',
 		function: {
@@ -109,7 +109,12 @@ const callAi = async (text: string, fileName: string | undefined) => {
 	};
 	const res = await fetch(AI_URL, {
 		method: 'POST',
-		headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+		headers: {
+			Authorization: `Bearer ${key}`,
+			'Content-Type': 'application/json',
+			'HTTP-Referer': Deno.env.get('SITE_URL') ?? 'http://localhost:5173/HireWise',
+			'X-Title': 'HireWise',
+		},
 		body: JSON.stringify({
 			model: MODEL,
 			messages: [

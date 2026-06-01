@@ -49,22 +49,25 @@ export const buildPosterPrompt = (
 	const skills = (job.skills ?? []).slice(0, 5).join(', ');
 	const goodToHave = (job.goodToHave ?? []).slice(0, 3).join(', ');
 	const styles = [
-		'editorial minimalist typography poster, generous whitespace, large display type',
-		'modern geometric poster with subtle gradients, layered shapes, bold sans-serif',
-		'bauhaus-inspired poster with strong grid, primary shapes and confident typography',
+		'premium editorial hiring poster, strong visual hierarchy, modern sans-serif, generous spacing',
+		'sleek tech recruiting poster, soft glow gradients, clean geometric shapes, high-end product aesthetic',
+		'bold campaign-style recruitment poster, structured grid, confident typography, refined contrast',
 	];
 	const style = styles[variant % styles.length];
 
 	const lines = [
-		`Recruitment wall poster (portrait, "wall-in" hanging poster) for: ${job.title ?? 'Open Role'}.`,
+		`Create an eye-catching recruitment wall poster (portrait, 2:3) for: ${job.title ?? 'Open Role'}.`,
 		`Department: ${job.department ?? 'Team'}.`,
-		skills && `Core skills to feature as small chips or accent text: ${skills}.`,
-		goodToHave && `Nice-to-have mentions: ${goodToHave}.`,
+		skills && `Core skills to show as polished skill tags: ${skills}.`,
+		goodToHave && `Optional "good to have" tags: ${goodToHave}.`,
 		`Visual style: ${style}.`,
 		`Color direction: ${palette}.`,
-		'Include the job title as the dominant text, a short "We are hiring" tag, and the department.',
-		'No human faces, no photographs, no logos. Crisp legible typography only.',
-		'Aspect ratio 2:3 portrait, print-ready, high-contrast, no watermark, no lorem ipsum.',
+		'Poster composition: big headline, one short subtitle, skill chips, and a small CTA footer.',
+		'Use clean English copy only; avoid gibberish text and avoid placeholder lorem ipsum.',
+		'Include only these text blocks: "We are hiring", job title, department, and skills.',
+		'No human faces, no photos, no logos, no brand names, no watermark.',
+		'Professional, premium, visually rich, balanced whitespace, high contrast and highly legible typography.',
+		'Print-ready look, crisp edges, cinematic lighting accents, modern texture depth.',
 		refinement && `User refinement: ${refinement}.`,
 	].filter(Boolean);
 

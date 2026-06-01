@@ -27,7 +27,18 @@ const CandidateListPage = () => {
 	const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 	const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
 	const [candidateJobs, setCandidateJobs] = useState<
-		{ jobId: string; overallScore: number; jobTitle: string }[]
+		{
+			jobId: string;
+			overallScore: number;
+			jobTitle: string;
+			jobDepartment?: string;
+			jobStatus?: string;
+			rank?: number;
+			skillsScore?: number;
+			experienceScore?: number;
+			educationScore?: number;
+			keywordScore?: number;
+		}[]
 	>([]);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -72,24 +83,58 @@ const CandidateListPage = () => {
 	const loadCandidateJobs = async (candidateId: string) => {
 		const { data } = await supabase
 			.from('rankings')
-			.select('jobId, overallScore')
+			.select(
+				'jobId, overallScore, skillsScore, experienceScore, educationScore, keywordScore, rank',
+			)
 			.eq('candidateId', candidateId)
 			.order('overallScore', { ascending: false })
 			.limit(5);
-		const rows = (data ?? []) as { jobId: string; overallScore: number }[];
+		const rows = (data ?? []) as {
+			jobId: string;
+			overallScore: number;
+			skillsScore: number;
+			experienceScore: number;
+			educationScore: number;
+			keywordScore: number;
+			rank: number;
+		}[];
 		if (rows.length > 0) {
 			const jobIds = rows.map((r) => r.jobId);
 			const { data: jobsData } = await supabase
 				.from('jobs')
-				.select('id, title')
+				.select('id, title, department, status')
 				.in('id', jobIds);
-			const jobs = (jobsData ?? []) as { id: string; title: string }[];
-			const jobMap = new Map(jobs.map((j) => [j.id, j.title]));
+			const jobs = (jobsData ?? []) as {
+				id: string;
+				title: string;
+				department: string | null;
+				status: string;
+			}[];
+			const jobMap = new Map(
+				jobs.map((job) => [
+					job.id,
+					{
+						title: job.title,
+						department: job.department ?? '',
+						status: job.status,
+					},
+				]),
+			);
 			setCandidateJobs(
 				rows.map((r) => ({
 					jobId: r.jobId,
 					overallScore: Number(r.overallScore),
-					jobTitle: jobMap.get(r.jobId) ?? 'Unknown',
+					jobTitle: jobMap.get(r.jobId)?.title ?? 'Unknown',
+					jobDepartment: jobMap.get(r.jobId)?.department ?? '',
+					jobStatus: jobMap.get(r.jobId)?.status ?? '',
+					rank: Number(r.rank ?? 0) > 0 ? Number(r.rank) : undefined,
+					skillsScore: Number(r.skillsScore ?? 0) > 0 ? Number(r.skillsScore) : undefined,
+					experienceScore:
+						Number(r.experienceScore ?? 0) > 0 ? Number(r.experienceScore) : undefined,
+					educationScore:
+						Number(r.educationScore ?? 0) > 0 ? Number(r.educationScore) : undefined,
+					keywordScore:
+						Number(r.keywordScore ?? 0) > 0 ? Number(r.keywordScore) : undefined,
 				})),
 			);
 		} else {

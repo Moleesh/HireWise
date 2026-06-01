@@ -9,7 +9,7 @@ import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
  *   - mode: "enhance"  -> rewrites raw pasted text into a clean, well-structured JD
  *   - mode: "parse" (default) -> extracts structured fields (title, department, skills, goodToHave)
  *
- * Uses AI Gateway when API_KEY is configured, falls back to a
+ * Uses OpenRouter when OPENROUTER_API_KEY/API_KEY is configured, falls back to a
  * lightweight regex heuristic otherwise so the function never hard-fails.
  */
 
@@ -19,8 +19,8 @@ const corsHeaders = {
 	'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Client-Info, Apikey',
 };
 
-const AI_URL = Deno.env.get('AI_URL') ?? 'https://ai.gateway.lovable.dev/v1/chat/completions';
-const MODEL = Deno.env.get('AI_MODEL') ?? 'google/gemini-2.0-flash';
+const AI_URL = Deno.env.get('AI_URL') ?? 'https://openrouter.ai/api/v1/chat/completions';
+const MODEL = Deno.env.get('AI_MODEL') ?? 'openrouter/free';
 
 const COMMON_SKILLS = [
 	'JavaScript',
@@ -89,11 +89,16 @@ const fallbackExtract = (text: string) => {
 };
 
 const callAi = async (messages: unknown[], tools?: unknown[], toolChoice?: unknown) => {
-	const key = Deno.env.get('API_KEY');
-	if (!key) throw new Error('API_KEY missing');
+	const key = Deno.env.get('OPENROUTER_API_KEY') ?? Deno.env.get('API_KEY');
+	if (!key) throw new Error('OPENROUTER_API_KEY missing');
 	const res = await fetch(AI_URL, {
 		method: 'POST',
-		headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+		headers: {
+			Authorization: `Bearer ${key}`,
+			'Content-Type': 'application/json',
+			'HTTP-Referer': Deno.env.get('SITE_URL') ?? 'http://localhost:5173/HireWise',
+			'X-Title': 'HireWise',
+		},
 		body: JSON.stringify({
 			model: MODEL,
 			messages,
@@ -166,10 +171,10 @@ Deno.serve(async (req: Request) => {
 				headers: { ...corsHeaders, 'Content-Type': 'application/json' },
 			});
 		}
-		const hasKey = !!Deno.env.get('API_KEY');
+		const hasOpenRouterKey = !!Deno.env.get('OPENROUTER_API_KEY') || !!Deno.env.get('API_KEY');
 
 		if (mode === 'enhance') {
-			const out = hasKey ? await enhance(text) : text;
+			const out = hasOpenRouterKey ? await enhance(text) : text;
 			return new Response(JSON.stringify({ text: out }), {
 				headers: { ...corsHeaders, 'Content-Type': 'application/json' },
 			});
@@ -177,7 +182,7 @@ Deno.serve(async (req: Request) => {
 
 		let result;
 		try {
-			result = hasKey ? await extract(text) : fallbackExtract(text);
+			result = hasOpenRouterKey ? await extract(text) : fallbackExtract(text);
 		} catch {
 			result = fallbackExtract(text);
 		}

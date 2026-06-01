@@ -25,46 +25,73 @@ const FieldReportTable = ({
 		<p className="text-xs text-[var(--text-tertiary)] mb-4">
 			Choose export columns and drag rows to set their order.
 		</p>
-		<div className="overflow-x-auto rounded-xl border border-[var(--border-subtle)]">
+		<div className="max-h-[24rem] overflow-auto rounded-xl border border-[var(--border-subtle)] bg-[var(--input-bg)] shadow-inner shadow-black/10">
 			<table className="min-w-full text-left text-sm">
-				<thead className="bg-[var(--input-bg)] text-[var(--text-quaternary)]">
+				<thead className="sticky top-0 z-10 bg-[var(--card-bg)] text-[var(--text-quaternary)]">
 					<tr>
-						<th className="px-3 py-2 font-medium">Move</th>
-						<th className="px-3 py-2 font-medium">Use</th>
-						<th className="px-3 py-2 font-medium">Column</th>
-						<th className="px-3 py-2 font-medium">Key</th>
+						<th className="px-3 py-2.5 text-xs font-semibold uppercase tracking-wider">
+							Move
+						</th>
+						<th className="px-3 py-2.5 text-xs font-semibold uppercase tracking-wider">
+							Use
+						</th>
+						<th className="px-3 py-2.5 text-xs font-semibold uppercase tracking-wider">
+							Column
+						</th>
+						<th className="px-3 py-2.5 text-xs font-semibold uppercase tracking-wider">
+							Key
+						</th>
 					</tr>
 				</thead>
 				<tbody className="divide-y divide-[var(--border-subtle)]">
-					{fields.map((field) => (
-						<tr
-							key={field.key}
-							draggable
-							onDragStart={(event) =>
-								event.dataTransfer.setData('fieldKey', field.key)
-							}
-							onDragOver={(event) => event.preventDefault()}
-							onDrop={(event) => {
-								event.preventDefault();
-								onReorderField(event.dataTransfer.getData('fieldKey'), field.key);
-							}}
-							className="text-[var(--text-secondary)] cursor-grab active:cursor-grabbing"
-						>
-							<td className="px-3 py-2 text-[var(--text-quaternary)]">
-								<GripVertical size={16} aria-label={`Move ${field.label}`} />
-							</td>
-							<td className="px-3 py-2">
-								<input
-									type="checkbox"
-									checked={selectedFieldKeys.includes(field.key)}
-									onChange={() => onToggleField(field.key)}
-									className="accent-[var(--accent-bg)]"
-								/>
-							</td>
-							<td className="px-3 py-2 font-medium">{field.label}</td>
-							<td className="px-3 py-2 text-[var(--text-quaternary)]">{field.key}</td>
-						</tr>
-					))}
+					{fields.map((field) => {
+						const selected = selectedFieldKeys.includes(field.key);
+						return (
+							<tr
+								key={field.key}
+								draggable
+								onDragStart={(event) =>
+									event.dataTransfer.setData('fieldKey', field.key)
+								}
+								onDragOver={(event) => event.preventDefault()}
+								onDrop={(event) => {
+									event.preventDefault();
+									onReorderField(
+										event.dataTransfer.getData('fieldKey'),
+										field.key,
+									);
+								}}
+								className={`cursor-grab active:cursor-grabbing transition-colors ${
+									selected
+										? 'bg-[var(--accent-bg-subtle)]/60 text-[var(--text-primary)]'
+										: 'text-[var(--text-secondary)] hover:bg-white/[0.03]'
+								}`}
+							>
+								<td className="px-3 py-2.5">
+									<div className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-[var(--btn-ghost-bg)] text-[var(--text-quaternary)]">
+										<GripVertical
+											size={14}
+											aria-label={`Move ${field.label}`}
+										/>
+									</div>
+								</td>
+								<td className="px-3 py-2.5">
+									<input
+										type="checkbox"
+										checked={selected}
+										onChange={() => onToggleField(field.key)}
+										className="accent-[var(--accent-bg)]"
+									/>
+								</td>
+								<td className="px-3 py-2.5 font-medium">{field.label}</td>
+								<td className="px-3 py-2.5">
+									<span className="inline-flex items-center rounded-md bg-[var(--btn-ghost-bg)] px-2 py-1 text-xs font-medium text-[var(--text-quaternary)]">
+										{field.key}
+									</span>
+								</td>
+							</tr>
+						);
+					})}
 				</tbody>
 			</table>
 		</div>

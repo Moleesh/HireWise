@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../shared/lib/supabase';
 import { UserPlus, Shield } from 'lucide-react';
 import FrostedCard from '../../shared/components/FrostedCard';
+import PageHero from '../../shared/components/PageHero';
+import ThemeSwitcher from '../../shared/components/ThemeSwitcher';
 import ZeroState from '../../shared/components/ZeroState';
 import { ShimmerRow } from '../../shared/components/ShimmerLoader';
 import CreateUserModal from './CreateUserModal';
@@ -111,22 +113,24 @@ const UserManagementPage = () => {
 
 	return (
 		<div className="max-w-7xl mx-auto">
-			<div className="flex items-center justify-between mb-6 md:mb-8">
-				<div>
-					<h1 className="text-xl md:text-2xl font-bold text-[var(--text-primary)]">
-						User Management
-					</h1>
-					<p className="text-[var(--text-tertiary)] mt-1 text-sm">
-						Manage admin and member accounts
-					</p>
-				</div>
-				<button
-					onClick={() => setShowAddModal(true)}
-					className="flex items-center gap-2 px-3 md:px-4 py-2.5 rounded-xl bg-[var(--accent-bg)] hover:bg-[var(--accent-bg-hover)] text-white font-medium text-sm transition-all shadow-lg shadow-[var(--accent-shadow)]"
-				>
-					<UserPlus size={16} /> <span className="hidden sm:inline">Add User</span>
-				</button>
-			</div>
+			<PageHero
+				eyebrow="Access Control"
+				title="User Management"
+				description="Manage admin and member accounts with secure role-based access."
+				action={
+					<div className="flex items-center gap-2">
+						<ThemeSwitcher showLabel={false} />
+						<button
+							onClick={() => setShowAddModal(true)}
+							className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[var(--accent-bg)] hover:bg-[var(--accent-bg-hover)] text-white font-medium text-xs md:text-sm whitespace-nowrap transition-all shadow-md shadow-[var(--accent-shadow)]"
+						>
+							<UserPlus size={14} />
+							<span className="md:hidden">Add</span>
+							<span className="hidden md:inline">Add User</span>
+						</button>
+					</div>
+				}
+			/>
 
 			{loading ? (
 				<FrostedCard className="p-6" hover={false}>

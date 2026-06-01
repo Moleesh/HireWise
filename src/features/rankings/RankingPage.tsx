@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '../../shared/lib/supabase';
-import { BarChart3, RefreshCw, Trophy, ChevronDown } from 'lucide-react';
+import { BarChart3, RefreshCw, Trophy } from 'lucide-react';
 import FrostedCard from '../../shared/components/FrostedCard';
+import PageHero from '../../shared/components/PageHero';
 import ZeroState from '../../shared/components/ZeroState';
 import ProgressBar from '../../shared/components/ProgressBar';
 import LeaderboardTable from './LeaderboardTable';
@@ -97,14 +98,11 @@ const RankingPage = ({ preselectedJobId }: RankingPageProps) => {
 
 	return (
 		<div className="max-w-7xl mx-auto">
-			<div className="flex items-center justify-between mb-8">
-				<div>
-					<h1 className="text-2xl font-bold text-[var(--text-primary)]">Rankings</h1>
-					<p className="text-[var(--text-tertiary)] mt-1">
-						Score candidates against jobs
-					</p>
-				</div>
-			</div>
+			<PageHero
+				eyebrow="Match Intelligence"
+				title="Rankings"
+				description="Score candidates against jobs to identify best-fit talent quickly."
+			/>
 
 			<FrostedCard className="p-5 mb-6" hover={false}>
 				<div className="flex items-center gap-4">
@@ -112,11 +110,11 @@ const RankingPage = ({ preselectedJobId }: RankingPageProps) => {
 						<label className="block text-sm font-medium text-[var(--text-secondary)] mb-1.5">
 							Select Job Description
 						</label>
-						<div className="relative">
+						<div className="select-wrap">
 							<select
 								value={selectedJobId}
 								onChange={(e) => setSelectedJobId(e.target.value)}
-								className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl px-4 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-ring)] transition-all appearance-none"
+								className="app-select w-full pr-10"
 							>
 								<option value="">Choose a job description...</option>
 								{jobs.map((job) => (
@@ -125,7 +123,6 @@ const RankingPage = ({ preselectedJobId }: RankingPageProps) => {
 									</option>
 								))}
 							</select>
-							<ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-quaternary)] pointer-events-none" />
 						</div>
 					</div>
 					<div className="pt-6">

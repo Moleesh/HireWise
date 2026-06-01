@@ -59,13 +59,13 @@ const CandidateReportTable = ({ candidates, fields, search }: CandidateReportTab
 				</div>
 			</div>
 			<div className="max-h-[28rem] max-w-full overflow-auto rounded-2xl border border-[var(--border-subtle)] bg-[var(--card-bg)] shadow-inner shadow-black/10">
-				<table className="min-w-full text-left text-sm">
-					<thead className="sticky top-0 z-10 bg-[var(--input-bg)] text-[var(--text-tertiary)]">
+				<table className="min-w-full text-left text-sm border-separate border-spacing-0">
+					<thead className="text-[var(--text-tertiary)]">
 						<tr>
 							{visibleFields.map((field) => (
 								<th
 									key={field.key}
-									className="px-4 py-3 text-xs font-bold uppercase tracking-wider whitespace-nowrap"
+									className="sticky top-0 z-20 px-4 py-3 text-xs font-bold uppercase tracking-wider whitespace-nowrap bg-[var(--input-bg)]/95 backdrop-blur border-b border-[var(--border-subtle)]"
 								>
 									<button
 										onClick={() => toggleSort(field.key)}

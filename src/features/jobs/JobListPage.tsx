@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useJobs } from './hooks/useJobs';
 import { Search, Plus } from 'lucide-react';
 import FrostedCard from '../../shared/components/FrostedCard';
+import PageHero from '../../shared/components/PageHero';
 import LoadMoreButton from '../../shared/components/LoadMoreButton';
 import ZeroState from '../../shared/components/ZeroState';
 import { ShimmerRow } from '../../shared/components/ShimmerLoader';
@@ -21,7 +22,6 @@ const JobListPage = ({ onNavigate }: JobListProps) => {
 	const { jobs, loading, deleteJob, duplicateJob, updateJob } = useJobs();
 	const [search, setSearch] = useState('');
 	const [statusFilter, setStatusFilter] = useState<string>('all');
-	const [menuOpen, setMenuOpen] = useState<string | null>(null);
 	const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
 	const filtered = jobs.filter((job) => {
@@ -48,41 +48,36 @@ const JobListPage = ({ onNavigate }: JobListProps) => {
 	const handleDelete = async (id: string) => {
 		await deleteJob(id);
 		setDeleteConfirm(null);
-		setMenuOpen(null);
 	};
 
 	const handleDuplicate = async (id: string) => {
 		const { data } = await duplicateJob(id);
 		if (data) onNavigate('job-editor', { id: data.id });
-		setMenuOpen(null);
 	};
 
 	const handleMarkFilled = async (job: Job) => {
 		await updateJob(job.id, { status: 'filled' });
-		setMenuOpen(null);
 	};
 
-	const handleRank = (jobId: string) => {
-		onNavigate('rankings', { jobId });
-		setMenuOpen(null);
-	};
+	const handleRank = (jobId: string) => onNavigate('rankings', { jobId });
 
 	return (
 		<div className="max-w-7xl mx-auto">
-			<div className="flex items-center justify-between mb-8">
-				<div>
-					<h1 className="text-2xl font-bold text-[var(--text-primary)]">Jobs</h1>
-					<p className="hidden sm:block text-[var(--text-tertiary)] mt-1">
-						Manage your hiring pipeline
-					</p>
-				</div>
-				<button
-					onClick={() => onNavigate('job-editor')}
-					className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--accent-bg)] hover:bg-[var(--accent-bg-hover)] text-white font-medium text-sm transition-all shadow-lg shadow-[var(--accent-shadow)] hover:shadow-[var(--accent-shadow-hover)]"
-				>
-					<Plus size={16} /> New Job
-				</button>
-			</div>
+			<PageHero
+				eyebrow="Hiring Pipeline"
+				title="Jobs"
+				description="Manage active roles, drafts, and hiring status from one place."
+				action={
+					<button
+						onClick={() => onNavigate('job-editor')}
+						className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[var(--accent-bg)] hover:bg-[var(--accent-bg-hover)] text-white font-medium text-xs md:text-sm whitespace-nowrap transition-all shadow-md shadow-[var(--accent-shadow)] hover:shadow-[var(--accent-shadow-hover)]"
+					>
+						<Plus size={14} />
+						<span className="sm:hidden">New</span>
+						<span className="hidden sm:inline">New Job</span>
+					</button>
+				}
+			/>
 
 			<div className="flex flex-col xl:flex-row gap-3 xl:gap-4 mb-6">
 				<div className="relative w-full xl:flex-1">
@@ -95,12 +90,12 @@ const JobListPage = ({ onNavigate }: JobListProps) => {
 						className="w-full bg-[var(--input-bg)] border border-[var(--input-border)] rounded-xl pl-10 pr-4 py-2.5 text-sm text-[var(--text-primary)] placeholder-[var(--text-quaternary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-ring)] transition-all"
 					/>
 				</div>
-				<div className="flex gap-2 overflow-x-auto pb-1 xl:pb-0 xl:overflow-visible">
+				<div className="grid grid-cols-2 sm:flex gap-2 sm:overflow-x-auto sm:pb-1 xl:pb-0 xl:overflow-visible">
 					{(['all', 'draft', 'published', 'filled'] as const).map((status) => (
 						<button
 							key={status}
 							onClick={() => setStatusFilter(status)}
-							className={`shrink-0 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+							className={`px-3 py-2 rounded-xl text-xs font-medium transition-all ${
 								statusFilter === status
 									? 'bg-[var(--accent-bg-subtle)] text-[var(--accent-text)] border border-[var(--accent-border)]'
 									: 'bg-[var(--btn-ghost-bg)] text-[var(--text-tertiary)] hover:bg-[var(--btn-ghost-hover)] border border-transparent'
@@ -145,15 +140,12 @@ const JobListPage = ({ onNavigate }: JobListProps) => {
 						<JobTile
 							key={job.id}
 							job={job}
-							menuOpen={menuOpen === job.id}
 							onNavigate={onNavigate}
-							onToggleMenu={() => setMenuOpen(menuOpen === job.id ? null : job.id)}
 							onDuplicate={handleDuplicate}
 							onRank={handleRank}
 							onMarkFilled={handleMarkFilled}
 							onDelete={(id) => {
 								setDeleteConfirm(id);
-								setMenuOpen(null);
 							}}
 						/>
 					))}

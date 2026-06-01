@@ -35,33 +35,29 @@ const ReportsPage = () => {
 				fields={report.selectedFields}
 				search={report.search}
 			/>
-			<ReportConfigModal
-				open={configOpen}
-				onClose={() => setConfigOpen(false)}
-				loading={loading}
-				reportName={report.reportName}
-				search={report.search}
-				candidates={report.filteredCandidates}
-				selectedIds={report.selectedCandidateIds}
-				defaultReportId={report.defaultReportId}
-				fields={report.orderedFields}
-				selectedFieldKeys={report.selectedFieldKeys}
-				allSelected={report.allFilteredSelected}
-				canSave={report.canExport}
-				saved={Boolean(report.lastSavedReportId)}
-				savedReports={report.savedReports}
-				onNameChange={report.setReportName}
-				onSearchChange={report.setSearch}
-				onToggleCandidate={report.toggleCandidate}
-				onToggleVisible={report.toggleFilteredCandidates}
-				onToggleField={report.toggleField}
-				onReorderField={report.reorderField}
-				onSave={report.saveReport}
-				onReset={report.resetReport}
-				onLoadReport={report.loadReport}
-				onDeleteReport={report.deleteReport}
-				onSetDefaultReport={report.setDefaultReport}
-			/>
+			{configOpen && (
+				<ReportConfigModal
+					open={configOpen}
+					onClose={() => setConfigOpen(false)}
+					loading={loading}
+					reportName={report.reportName}
+					search={report.search}
+					candidates={report.filteredCandidates}
+					selectedIds={report.selectedCandidateIds}
+					defaultReportId={report.defaultReportId}
+					fields={report.orderedFields}
+					selectedFieldKeys={report.selectedFieldKeys}
+					canSave={report.canExport}
+					saved={Boolean(report.lastSavedReportId)}
+					onNameChange={report.setReportName}
+					onSearchChange={report.setSearch}
+					onToggleVisible={report.toggleFilteredCandidates}
+					onToggleField={report.toggleField}
+					onReorderField={report.reorderField}
+					onSave={report.saveReport}
+					onReset={report.resetReport}
+				/>
+			)}
 		</div>
 	);
 };

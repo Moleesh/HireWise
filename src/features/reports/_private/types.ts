@@ -14,4 +14,5 @@ export type SavedReport = {
 	fieldKeys: string[];
 	candidateIds: string[];
 	createdAt: string;
+	favorite?: boolean;
 };

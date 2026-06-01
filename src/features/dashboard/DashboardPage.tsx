@@ -92,6 +92,7 @@ const DashboardPage = ({ onNavigate }: DashboardProps) => {
 			value: stats.totalJobs,
 			icon: FileText,
 			sub: `${stats.publishedJobs} published`,
+			detail: `${Math.max(stats.totalJobs - stats.publishedJobs, 0)} not published`,
 			accent: 'var(--accent-text)',
 			navigate: () => onNavigate('jobs'),
 		},
@@ -100,6 +101,7 @@ const DashboardPage = ({ onNavigate }: DashboardProps) => {
 			value: stats.totalCandidates,
 			icon: Users,
 			sub: 'in pipeline',
+			detail: `${Math.max(stats.totalCandidates - stats.hiredCandidates, 0)} active`,
 			accent: 'var(--stat-cyan)',
 			navigate: () => onNavigate('candidates'),
 		},
@@ -108,6 +110,10 @@ const DashboardPage = ({ onNavigate }: DashboardProps) => {
 			value: stats.hiredCandidates,
 			icon: UserCheck,
 			sub: 'candidates',
+			detail:
+				stats.totalCandidates > 0
+					? `${Math.round((stats.hiredCandidates / stats.totalCandidates) * 100)}% hire rate`
+					: '0% hire rate',
 			accent: 'var(--stat-teal)',
 			navigate: () => onNavigate('candidates'),
 		},
@@ -116,6 +122,7 @@ const DashboardPage = ({ onNavigate }: DashboardProps) => {
 			value: stats.totalRankings,
 			icon: BarChart3,
 			sub: 'evaluated',
+			detail: `${stats.recentJobs.length} recent jobs`,
 			accent: 'var(--stat-amber)',
 			navigate: () => onNavigate('rankings'),
 		},
@@ -131,7 +138,7 @@ const DashboardPage = ({ onNavigate }: DashboardProps) => {
 				{statCards.map((card) => (
 					<FrostedCard
 						key={card.label}
-						className="p-4 md:p-5 cursor-pointer"
+						className="p-4 md:p-5 cursor-pointer min-h-[190px] md:min-h-[210px] flex flex-col transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
 						onClick={card.navigate}
 					>
 						<div className="flex items-start justify-between mb-3 md:mb-4">
@@ -149,9 +156,24 @@ const DashboardPage = ({ onNavigate }: DashboardProps) => {
 						<p className="text-xs md:text-sm text-[var(--text-tertiary)] mt-1">
 							{card.label}
 						</p>
-						<p className="text-[10px] md:text-xs mt-1" style={{ color: card.accent }}>
-							{card.sub}
-						</p>
+						<div className="mt-auto pt-3">
+							<div className="h-px bg-[var(--border-subtle)] mb-2.5" />
+							<div className="space-y-1.5">
+								<p
+									className="text-[10px] md:text-xs px-2 py-1 rounded-md border w-fit"
+									style={{
+										color: card.accent,
+										backgroundColor: `color-mix(in srgb, ${card.accent} 10%, transparent)`,
+										borderColor: `color-mix(in srgb, ${card.accent} 25%, transparent)`,
+									}}
+								>
+									{card.sub}
+								</p>
+								<p className="text-[10px] md:text-xs text-[var(--text-quaternary)]">
+									{card.detail}
+								</p>
+							</div>
+						</div>
 					</FrostedCard>
 				))}
 			</div>

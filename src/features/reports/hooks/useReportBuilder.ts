@@ -11,6 +11,7 @@ import {
 	writeDefaultReportId,
 	writeSavedReports,
 } from '../_private/storage';
+import { buildUniqueReportName } from '../_private/reportNames';
 import type { ReportField, SavedReport } from '../_private/types';
 
 const defaultFields = ['name', 'email', 'status', 'experienceYears', 'skills'];
@@ -73,23 +74,30 @@ export const useReportBuilder = (candidates: Candidate[]) => {
 		setFieldOrder((prev) => moveItem(prev, prev.indexOf(fromKey), prev.indexOf(toKey)));
 	};
 
-	const toggleFilteredCandidates = () => {
+	const toggleFilteredCandidates = (visibleIds?: string[]) => {
 		setLastSavedReportId('');
+		const targetCandidates = visibleIds?.length
+			? filteredCandidates.filter((candidate) => visibleIds.includes(candidate.id))
+			: filteredCandidates;
 		if (allFilteredSelected) {
-			const filteredIds = new Set(filteredCandidates.map((candidate) => candidate.id));
+			const filteredIds = new Set(targetCandidates.map((candidate) => candidate.id));
 			setSelectedCandidateIds((prev) => prev.filter((id) => !filteredIds.has(id)));
 			return;
 		}
 		setSelectedCandidateIds((prev) =>
-			Array.from(new Set([...prev, ...filteredCandidates.map((candidate) => candidate.id)])),
+			Array.from(new Set([...prev, ...targetCandidates.map((candidate) => candidate.id)])),
 		);
 	};
 
 	const saveReport = () => {
 		if (!reportCandidateIds.length || !selectedFieldKeys.length) return;
+		const uniqueName = buildUniqueReportName(
+			reportName,
+			savedReports.map((report) => report.name),
+		);
 		const report: SavedReport = {
 			id: createReportId(),
-			name: reportName.trim() || 'Candidate Report',
+			name: uniqueName,
 			fieldKeys: selectedFieldKeys,
 			candidateIds: reportCandidateIds,
 			createdAt: new Date().toISOString(),
@@ -110,6 +118,29 @@ export const useReportBuilder = (candidates: Candidate[]) => {
 	const deleteReport = (reportId: string) => {
 		setReports(savedReports.filter((report) => report.id !== reportId));
 		if (defaultReportId === reportId) setDefaultReport('');
+	};
+
+	const renameReport = (reportId: string, nextName: string) => {
+		const trimmed = nextName.trim();
+		if (!trimmed) return;
+		const baseNames = savedReports
+			.filter((report) => report.id !== reportId)
+			.map((report) => report.name);
+		const uniqueName = buildUniqueReportName(trimmed, baseNames);
+		setReports(
+			savedReports.map((report) =>
+				report.id === reportId ? { ...report, name: uniqueName } : report,
+			),
+		);
+		if (lastSavedReportId === reportId) setReportName(uniqueName);
+	};
+
+	const toggleFavoriteReport = (reportId: string) => {
+		setReports(
+			savedReports.map((report) =>
+				report.id === reportId ? { ...report, favorite: !report.favorite } : report,
+			),
+		);
 	};
 
 	const setDefaultReport = (reportId: string) => {
@@ -143,6 +174,7 @@ export const useReportBuilder = (candidates: Candidate[]) => {
 		loadReport,
 		reportName,
 		resetReport,
+		renameReport,
 		savedReports,
 		saveReport,
 		search,
@@ -154,6 +186,7 @@ export const useReportBuilder = (candidates: Candidate[]) => {
 		setSearch,
 		setDefaultReport,
 		reorderField,
+		toggleFavoriteReport,
 		toggleCandidate,
 		toggleField,
 		toggleFilteredCandidates,

@@ -62,7 +62,7 @@ const PosterGeneratorModal = ({
 	const generateAll = async () => {
 		setGenerating(true);
 		setError(null);
-		const prompts = [0, 1, 2].map((i) => buildPosterPrompt(job, theme, i));
+		const prompts = [buildPosterPrompt(job, theme, 0)];
 		const initial: Variant[] = prompts.map((p) => ({
 			url: '',
 			prompt: p,
@@ -108,7 +108,7 @@ const PosterGeneratorModal = ({
 		<Modal open={isOpen} onClose={onClose} title="Generate Recruitment Posters" size="lg">
 			<div className="space-y-4">
 				<p className="text-sm text-[var(--text-tertiary)] flex items-center gap-2">
-					<Sparkles size={14} /> Three wall-in portrait variations tuned to your theme.
+					<Sparkles size={14} /> One wall-in portrait poster tuned to your theme.
 				</p>
 
 				{missing.length > 0 ? (
@@ -122,12 +122,12 @@ const PosterGeneratorModal = ({
 						disabled={generating}
 						className="w-full px-6 py-3 rounded-xl text-sm font-medium bg-[var(--accent-bg)] hover:bg-[var(--accent-bg-hover)] text-white transition-all shadow-lg shadow-[var(--accent-shadow)] disabled:opacity-50"
 					>
-						{generating ? 'Generating...' : 'Generate 3 variations'}
+						{generating ? 'Generating...' : 'Generate poster'}
 					</button>
 				) : (
 					<>
 						{error && <div className="mb-3 text-sm text-red-400">{error}</div>}
-						<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+						<div className="grid grid-cols-1 gap-4">
 							{variants.map((v, i) => (
 								<div
 									key={i}
@@ -139,7 +139,7 @@ const PosterGeneratorModal = ({
 										) : v.url ? (
 											<img
 												src={v.url}
-												alt={`Poster ${i + 1}`}
+												alt="Poster"
 												className="w-full h-full object-cover"
 											/>
 										) : (
@@ -188,7 +188,7 @@ const PosterGeneratorModal = ({
 							disabled={generating}
 							className="mt-4 w-full px-4 py-2 rounded-xl text-xs font-medium bg-[var(--btn-ghost-bg)] text-[var(--text-secondary)] hover:bg-[var(--btn-ghost-hover)] disabled:opacity-50"
 						>
-							Regenerate all
+							Regenerate
 						</button>
 					</>
 				)}

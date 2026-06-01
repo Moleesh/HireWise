@@ -4,8 +4,12 @@ import useTheme from '../hooks/useTheme';
 import { Palette } from 'lucide-react';
 import { themes } from './ThemeSwitcher/_private/config';
 
+type ThemeSwitcherProps = {
+	showLabel?: boolean;
+};
+
 /** ThemeSwitcher - Dropdown for selecting between 4 color themes. */
-const ThemeSwitcher = () => {
+const ThemeSwitcher = ({ showLabel = true }: ThemeSwitcherProps) => {
 	const { theme, setTheme } = useTheme();
 	const activeTheme = themes.find((item) => item.name === theme) ?? themes[0];
 
@@ -13,7 +17,7 @@ const ThemeSwitcher = () => {
 		<div className="theme-switcher relative group">
 			<button className="theme-switcher__trigger flex items-center gap-2 px-3 py-2 rounded-xl transition-all">
 				<Palette size={16} />
-				<span className="text-xs">{activeTheme.label}</span>
+				{showLabel && <span className="text-xs">{activeTheme.label}</span>}
 			</button>
 			<div className="theme-switcher__menu absolute bottom-full left-0 mb-2 w-56 py-2 rounded-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-out z-50 origin-bottom-left group-hover:-translate-y-1 group-hover:scale-[1.01]">
 				{themes.map((t) => {

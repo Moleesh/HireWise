@@ -30,6 +30,7 @@ const JobEditorPage = ({ onNavigate, jobId, mode = 'create' }: JobEditorProps) =
 				step={editor.step}
 				saving={editor.saving}
 				summarizing={editor.summarizing}
+				summaryError={editor.summaryError}
 				onNavigate={onNavigate}
 				onRegenerateSummary={() => editor.generateSummary(true)}
 				onOpenPoster={() => editor.setPosterOpen(true)}
@@ -75,6 +76,7 @@ const JobEditorPage = ({ onNavigate, jobId, mode = 'create' }: JobEditorProps) =
 					isView={editor.isView}
 					saving={editor.saving}
 					summarizing={editor.summarizing}
+					summaryError={editor.summaryError}
 					onRegenerateSummary={editor.generateSummary}
 					onOpenPoster={() => editor.setPosterOpen(true)}
 					onSave={editor.handleSave}

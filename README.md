@@ -4,7 +4,7 @@
 
 [![Build and Deploy to GitHub Pages](https://github.com/Moleesh/HireWise/actions/workflows/main.yml/badge.svg)](https://github.com/Moleesh/HireWise/actions/workflows/main.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-3178C6?logo=typescript)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react)](https://react.dev/)
+[![React](https://img.shields.io/badge/React-19.2-61DAFB?logo=react)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)](https://vitejs.dev/)
 
 > **Transform Your Hiring Process** | Streamlined Recruitment from Job Posting to Perfect Candidate Match
@@ -30,7 +30,7 @@ A next-generation recruiting and talent management platform that revolutionizes 
 - 🚀 **Smart Workflow** - Seamless journey from job posting to candidate selection
 - 👥 **Unified Dashboard** - Real-time insights into your hiring pipeline
 - 🔐 **Enterprise Security** - Role-based access control and secure authentication
-- 🎨 **Beautiful UI** - Light & dark mode with responsive design
+- 🎨 **Beautiful UI** - Multi-theme UI with responsive design
 - ⚡ **Lightning Fast** - Built with modern tech stack for peak performance
 
 ---
@@ -48,9 +48,9 @@ A next-generation recruiting and talent management platform that revolutionizes 
 | 📋 **Job Management**      | Create, edit, and manage job postings with rich descriptions and custom requirements |
 | 👤 **Candidate Tracking**  | Maintain detailed profiles and track every stage of the application lifecycle        |
 | 🤖 **Smart Ranking**       | AI-driven candidate ranking to find the perfect fit for your positions               |
-| 📑 **Candidate Reports**   | Build reusable Excel-ready reports from filtered candidates and selected columns     |
+| 📑 **Candidate Reports**   | Build reusable Excel-ready reports with sortable table previews and saved workflows  |
 | 📊 **Analytics Dashboard** | Key hiring metrics, pipeline overview, and performance analytics                     |
-| 👨‍💼 **User Management**     | Team administration with granular permission controls                                |
+| 👨‍💼 **User Management**     | Team administration with role control, password reset, and username-based onboarding |
 | 🌓 **Theme Switcher**      | Elegant light and dark mode support                                                  |
 | 🔒 **Secure Auth**         | Industry-standard authentication with session management                             |
 
@@ -63,10 +63,11 @@ A next-generation recruiting and talent management platform that revolutionizes 
 | **Small view** | Mobile-first stacked cards, compact filters, touch-friendly actions       |
 | **Large view** | Wider dashboards, multi-column grids, side-by-side reports, richer tables |
 
-Reports include two focused views:
+Reports include two focused views and workflow tools:
 
-- **Candidate List View** — filter candidates, preview rows in a table, and export only the selected candidates.
-- **Field Column Report** — choose which table columns are included in the saved workflow and CSV export.
+- **Candidate List View** — filter candidates, preview rows in a sortable table, and export selected/visible rows.
+- **Field Column Report** — choose columns and drag/drop to control export order.
+- **Saved Workflows** — save reusable report setups and set defaults for repeat exports.
 
 ---
 
@@ -184,6 +185,11 @@ src/
 **Workflow File**: `.github/workflows/main.yml`  
 **Status**: [View Actions](https://github.com/Moleesh/HireWise/actions)  
 **Live**: [Moleesh.github.io/HireWise](https://Moleesh.github.io/HireWise/)
+
+### GitHub Pages Routing
+
+- App is deployed under base path `/HireWise`.
+- Build emits `dist/404.html` as an SPA fallback so deep links (for example `/HireWise/candidates`) reload correctly on GitHub Pages.
 
 ---
 

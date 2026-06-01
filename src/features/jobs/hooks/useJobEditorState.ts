@@ -25,6 +25,7 @@ export const useJobEditorState = ({ jobId, mode, onNavigate }: UseJobEditorState
 	const [parsing, setParsing] = useState(false);
 	const [enhancing, setEnhancing] = useState(false);
 	const [summarizing, setSummarizing] = useState(false);
+	const [summaryError, setSummaryError] = useState<string | null>(null);
 	const [posterOpen, setPosterOpen] = useState(false);
 	const [newItem, setNewItem] = useState<Record<string, string>>({});
 	const isView = mode === 'view';
@@ -85,12 +86,16 @@ export const useJobEditorState = ({ jobId, mode, onNavigate }: UseJobEditorState
 	const generateSummary = async (persist = false) => {
 		if (!job.title?.trim()) return;
 		setSummarizing(true);
-		const res = await callEdge<{ summary?: string }>('generate-summary', {
-			title: job.title,
-			department: job.department,
-			skills: job.skills,
-			goodToHave: job.goodToHave,
-		});
+		setSummaryError(null);
+		const res = await callEdge<{ summary?: string; error?: string; status?: number }>(
+			'generate-summary',
+			{
+				title: job.title,
+				department: job.department,
+				skills: job.skills,
+				goodToHave: job.goodToHave,
+			},
+		);
 		if (res?.summary) {
 			setJob((prev) => ({ ...prev, summary: res.summary }));
 			if (persist && (job.id || jobId)) {
@@ -99,6 +104,11 @@ export const useJobEditorState = ({ jobId, mode, onNavigate }: UseJobEditorState
 					.update({ summary: res.summary, updatedAt: new Date().toISOString() })
 					.eq('id', job.id ?? jobId);
 			}
+		} else {
+			setSummaryError(
+				res?.error ??
+					'Unable to regenerate summary right now. Please check API key/config and try again.',
+			);
 		}
 		setSummarizing(false);
 	};
@@ -189,6 +199,7 @@ export const useJobEditorState = ({ jobId, mode, onNavigate }: UseJobEditorState
 		setRawText,
 		setStep,
 		step,
+		summaryError,
 		summarizing,
 		updateField,
 	};

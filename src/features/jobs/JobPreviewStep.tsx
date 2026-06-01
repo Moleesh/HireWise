@@ -11,6 +11,7 @@ type JobPreviewStepProps = {
 	isView: boolean;
 	saving: boolean;
 	summarizing: boolean;
+	summaryError: string | null;
 	onRegenerateSummary: () => void;
 	onOpenPoster: () => void;
 	onSave: (status?: 'draft' | 'published') => void;
@@ -23,11 +24,62 @@ const JobPreviewStep = ({
 	isView,
 	saving,
 	summarizing,
+	summaryError,
 	onRegenerateSummary,
 	onOpenPoster,
 	onSave,
 	onBack,
 }: JobPreviewStepProps) => {
+	const renderSummary = (summary: string) => {
+		const lines = summary
+			.split('\n')
+			.map((line) => line.trim())
+			.filter(Boolean);
+
+		return (
+			<div className="space-y-2 text-sm">
+				{lines.map((line, index) => {
+					const isBullet = /^[-•]/.test(line);
+					const cleanLine = line.replace(/^[-•]\s*/, '');
+					const isSectionHeading = !isBullet && !line.includes('—') && line.length < 40;
+
+					if (isBullet) {
+						return (
+							<div key={`${line}-${index}`} className="flex items-start gap-2.5">
+								<span className="mt-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-[var(--accent-bg-subtle)] border border-[var(--accent-border)] text-[var(--accent-text)] text-[10px]">
+									✓
+								</span>
+								<span className="text-[var(--text-primary)] leading-relaxed">
+									{cleanLine}
+								</span>
+							</div>
+						);
+					}
+
+					if (isSectionHeading) {
+						return (
+							<p
+								key={`${line}-${index}`}
+								className="mt-2 text-[var(--accent-text)] font-semibold"
+							>
+								{line}
+							</p>
+						);
+					}
+
+					return (
+						<p
+							key={`${line}-${index}`}
+							className="text-[var(--text-primary)] leading-relaxed"
+						>
+							{line}
+						</p>
+					);
+				})}
+			</div>
+		);
+	};
+
 	return (
 		<div className="space-y-6">
 			<FrostedCard className="p-6" hover={false}>
@@ -76,8 +128,19 @@ const JobPreviewStep = ({
 						summary...
 					</div>
 				) : (
-					<div className="text-[var(--text-primary)] leading-relaxed whitespace-pre-wrap text-sm">
-						{job.summary ?? 'No summary yet. Click Regenerate to create one.'}
+					<div className="text-[var(--text-primary)]">
+						{job.summary ? (
+							renderSummary(job.summary)
+						) : (
+							<p className="text-sm text-[var(--text-tertiary)]">
+								No summary yet. Click Regenerate to create one.
+							</p>
+						)}
+					</div>
+				)}
+				{summaryError && (
+					<div className="mt-3 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+						{summaryError}
 					</div>
 				)}
 			</FrostedCard>
@@ -121,7 +184,7 @@ const JobPreviewStep = ({
 			<FrostedCard className="p-6" hover={false}>
 				<div className="flex items-center justify-between mb-3">
 					<h3 className="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wider">
-						Recruitment Posters
+						Poster Studio
 					</h3>
 					{!isView && (
 						<button
@@ -129,13 +192,17 @@ const JobPreviewStep = ({
 							className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[var(--accent-bg-subtle)] text-[var(--accent-text)] hover:bg-[var(--accent-bg)] hover:text-white transition-all"
 							type="button"
 						>
-							<ImageIcon size={12} /> Generate
+							<ImageIcon size={12} /> Create Poster
 						</button>
 					)}
 				</div>
+				<p className="text-xs text-[var(--text-tertiary)] mb-3">
+					Generate one AI poster for this job, refine the style, then save it for sharing.
+				</p>
 				{(job.posters ?? []).length === 0 ? (
 					<p className="text-sm text-[var(--text-tertiary)]">
-						No posters yet. Use AI to generate a wall-in recruitment poster.
+						No poster yet. Click <strong>Create Poster</strong> to generate one from
+						this job details.
 					</p>
 				) : (
 					<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">

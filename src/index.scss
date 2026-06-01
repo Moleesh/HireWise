@@ -6,6 +6,7 @@
 @use './_styles/app-themes.scss' as themes;
 @use './_styles/base.scss' as base;
 @use './_styles/animations.scss' as animations;
+@use './_styles/animation-utilities.scss' as animationUtilities;
 @use './_styles/ThemeSwitcher.scss' as themeSwitcher;
 @use 'tailwindcss';
 

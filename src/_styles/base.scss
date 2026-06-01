@@ -36,6 +36,24 @@
 		font-feature-settings: 'cv02', 'cv03';
 	}
 
+	button,
+	[role='button'],
+	a[href],
+	input[type='button'],
+	input[type='submit'],
+	input[type='reset'],
+	summary,
+	select {
+		cursor: pointer;
+	}
+
+	button:disabled,
+	[role='button'][aria-disabled='true'],
+	input:disabled,
+	select:disabled {
+		cursor: not-allowed;
+	}
+
 	h1,
 	h2,
 	h3,
@@ -49,5 +67,51 @@
 	select option {
 		background-color: var(--select-option-bg);
 		color: var(--text-primary);
+	}
+
+	.app-select {
+		appearance: none !important;
+		-webkit-appearance: none !important;
+		-moz-appearance: none !important;
+		background-image: none !important;
+		background-color: var(--input-bg);
+		border: 1px solid var(--input-border);
+		border-radius: 0.75rem;
+		color: var(--text-primary);
+		min-height: 2.5rem;
+		padding: 0.55rem 2.25rem 0.55rem 0.85rem;
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease,
+			background-color 0.2s ease;
+	}
+
+	.app-select::-ms-expand {
+		display: none;
+	}
+
+	.app-select:hover {
+		background-color: color-mix(in srgb, var(--input-bg) 88%, white 12%);
+	}
+
+	.app-select:focus {
+		outline: none;
+		box-shadow: 0 0 0 2px var(--accent-ring);
+		border-color: color-mix(in srgb, var(--accent-bg) 45%, var(--input-border) 55%);
+	}
+
+	.select-wrap {
+		position: relative;
+	}
+
+	.select-wrap .select-icon {
+		pointer-events: none;
+		position: absolute;
+		right: 0.75rem;
+		top: 50%;
+		transform: translateY(-50%);
+		color: var(--text-quaternary);
 	}
 }
