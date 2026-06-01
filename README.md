@@ -9,7 +9,7 @@
 
 > **Transform Your Hiring Process** | Streamlined Recruitment from Job Posting to Perfect Candidate Match
 
-A next-generation recruiting and talent management platform that revolutionizes how teams discover, evaluate, and hire top talent. Say goodbye to manual candidate sorting—let intelligent ranking algorithms handle the heavy lifting.
+A next-generation recruiting and talent management platform that revolutionizes how teams discover, evaluate, and hire top talent. Say goodbye to manual candidate sorting—let intelligent ranking[...]
 
 ---
 
@@ -17,10 +17,9 @@ A next-generation recruiting and talent management platform that revolutionizes 
 
 | Language   | Percentage |
 | ---------- | ---------- |
-| TypeScript | 82.1%      |
-| SCSS       | 11.5%      |
-| PLpgSQL    | 5.5%       |
-| Other      | 0.9%       |
+| TypeScript | 88.8%      |
+| SCSS       | 9.7%       |
+| Other      | 1.5%       |
 
 ---
 
@@ -76,15 +75,15 @@ Reports include two focused views and workflow tools:
 ### Frontend
 
 - **React** 19 (UI)
-- **TypeScript** 6 (82.1%) — type-safe scripting
+- **TypeScript** 6 (88.8%) — type-safe scripting
 - **Vite** 8 — dev server & build tool
-- **Tailwind CSS** 4 & SCSS (11.5%) — styling
+- **Tailwind CSS** 4 & SCSS (9.7%) — styling
 - **Lucide React** 1 — icon library
 
 ### Backend & Database
 
 - **Supabase** — hosted PostgreSQL+API
-- **PLpgSQL** (5.5%) — PostgreSQL functions/stored procedures
+- **PLpgSQL** — PostgreSQL functions/stored procedures
 - **Supabase Auth** — authentication
 
 ### Tools & Testing
