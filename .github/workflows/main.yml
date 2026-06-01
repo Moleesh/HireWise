@@ -11,9 +11,9 @@ jobs:
         name: Build Application
         runs-on: ubuntu-latest
         environment:
-            name: github-pages
+            name: HireWise
         env:
-            VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+            VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
             VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         steps:
             - name: Checkout code
