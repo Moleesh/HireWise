@@ -5,17 +5,8 @@ import { githubPagesFallback } from './vite.github-pages.js';
 import { writeFileSync } from 'fs';
 
 export default defineConfig({
-	base: '/HireWise/',
-	plugins: [
-		react(),
-		githubPagesFallback(),
-		{
-			name: 'nojekyll',
-			closeBundle() {
-				writeFileSync('dist/.nojekyll', '');
-			},
-		},
-	],
+	base: '/HireWise',
+	plugins: [react(), githubPagesFallback()],
 	optimizeDeps: {
 		exclude: ['lucide-react'],
 	},
