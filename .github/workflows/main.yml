@@ -34,12 +34,10 @@ jobs:
             - name: Build project
               run: bun run build
 
-            - name: Upload artifact
-              uses: actions/upload-artifact@v4
+            - name: Upload to Pages
+              uses: actions/upload-pages-artifact@v3
               with:
-                  name: dist-artifact
                   path: dist/
-                  retention-days: 5
 
     deploy:
         name: Deploy to GitHub Pages
@@ -54,16 +52,6 @@ jobs:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
         steps:
-            - name: Download artifact
-              uses: actions/download-artifact@v4
-              with:
-                  name: dist-artifact
-
-            - name: Setup Pages
-              uses: actions/configure-pages@v5
-
             - name: Deploy to GitHub Pages
               id: deployment
-              uses: actions/deploy-pages@v5
-              with:
-                  artifact-id: dist-artifact
+              uses: actions/deploy-pages@v4
