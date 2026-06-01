@@ -2,7 +2,6 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { githubPagesFallback } from './vite.github-pages.js';
-import { writeFileSync } from 'fs';
 
 export default defineConfig({
 	base: '/HireWise',
