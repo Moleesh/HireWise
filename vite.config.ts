@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 import { githubPagesFallback } from './vite.github-pages.js';
 
 export default defineConfig({
-	base: '/HireWise/',
+	base: '/HireWise',
 	plugins: [react(), githubPagesFallback()],
 	optimizeDeps: {
 		exclude: ['lucide-react'],

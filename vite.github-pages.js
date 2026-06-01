@@ -1,6 +1,6 @@
 /** @format */
 
-import { copyFileSync, existsSync, writeFileSync } from 'fs';
+import { copyFileSync, existsSync } from 'fs';
 import { resolve } from 'path';
 
 export const githubPagesFallback = () => ({
@@ -9,6 +9,5 @@ export const githubPagesFallback = () => ({
 		const indexPath = resolve('dist', 'index.html');
 		const fallbackPath = resolve('dist', '404.html');
 		if (existsSync(indexPath)) copyFileSync(indexPath, fallbackPath);
-		writeFileSync(resolve('dist', '.nojekyll'), '');
 	},
 });
