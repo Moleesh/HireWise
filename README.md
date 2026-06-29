@@ -7,18 +7,6 @@
 [![React](https://img.shields.io/badge/React-19.2-61DAFB?logo=react)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)](https://vitejs.dev/)
 
-<div align="center">
-  <a href="https://bolt.new/">
-    <img
-      alt="Bolt.new"
-      src="https://bolt.new/static/favicon.svg"
-      width="96"
-      height="96"
-    />
-  </a>
-  <h2>Developed using Bolt.new</h2>
-</div>
-
 > **Transform Your Hiring Process** | Streamlined Recruitment from Job Posting to Perfect Candidate Match
 
 A next-generation recruiting and talent management platform that revolutionizes how teams discover, evaluate, and hire top talent. Say goodbye to manual candidate sorting—let intelligent ranking[...]
@@ -207,6 +195,12 @@ src/
 ## 🤝 Contributing
 
 We love contributions! Here's how to get started:
+
+### Developed Using Bolt.new
+
+[<img alt="Bolt.new" src="https://bolt.new/static/favicon.svg" width="72" height="72" />](https://bolt.new/)
+
+This project was developed using [Bolt.new](https://bolt.new/).
 
 ```bash
 # Create your feature branch
