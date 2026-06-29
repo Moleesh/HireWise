@@ -196,12 +196,6 @@ src/
 
 We love contributions! Here's how to get started:
 
-### Developed Using Bolt.new
-
-[<img alt="Bolt.new" src="https://bolt.new/static/favicon.svg" width="72" height="72" />](https://bolt.new/)
-
-This project was developed using [Bolt.new](https://bolt.new/).
-
 ```bash
 # Create your feature branch
 git checkout -b feature/amazing-feature
@@ -214,6 +208,9 @@ git push origin feature/amazing-feature
 
 # Open a Pull Request
 ```
+
+[<img alt="Bolt.new" src="https://bolt.new/static/favicon.svg" width="40" height="40" />](https://bolt.new/)
+⚡ **Developed using [Bolt.new](https://bolt.new/).**
 
 ---
 
