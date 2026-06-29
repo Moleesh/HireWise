@@ -209,9 +209,6 @@ git push origin feature/amazing-feature
 # Open a Pull Request
 ```
 
-[<img alt="Bolt.new" src="https://bolt.new/static/favicon.svg" width="40" height="40" />](https://bolt.new/)
-⚡ **Developed using [Bolt.new](https://bolt.new/).**
-
 ---
 
 ## 📊 Performance Metrics
@@ -226,6 +223,12 @@ git push origin feature/amazing-feature
 ## 🐛 Issues & Support
 
 Found a bug or have a feature request? [Open an Issue](https://github.com/Moleesh/HireWise/issues)
+
+---
+
+## 🙌 Credits
+
+- <img alt="Bolt.new" src="https://bolt.new/static/favicon.svg" width="18" height="18" /> Developed using [Bolt.new](https://bolt.new/).
 
 ---
 
