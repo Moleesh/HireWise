@@ -6,7 +6,18 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19.2-61DAFB?logo=react)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite)](https://vitejs.dev/)
-[![Bolt.new AI](https://img.shields.io/badge/Bolt.new-AI-000000)](https://bolt.new/)
+
+<div align="center">
+  <a href="https://bolt.new/">
+    <img
+      alt="Bolt.new"
+      src="https://bolt.new/static/favicon.svg"
+      width="96"
+      height="96"
+    />
+  </a>
+  <h2>Developed using Bolt.new</h2>
+</div>
 
 > **Transform Your Hiring Process** | Streamlined Recruitment from Job Posting to Perfect Candidate Match
 
