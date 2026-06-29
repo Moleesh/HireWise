@@ -228,7 +228,7 @@ Found a bug or have a feature request? [Open an Issue](https://github.com/Molees
 
 ## 🙌 Credits
 
-- <img alt="Bolt.new" src="https://bolt.new/static/favicon.svg" width="18" height="18" /> Developed using [Bolt.new](https://bolt.new/).
+<img alt="Bolt.new" src="https://bolt.new/static/favicon.svg" width="18" height="18" /> Developed using [Bolt.new](https://bolt.new/).
 
 ---
 
