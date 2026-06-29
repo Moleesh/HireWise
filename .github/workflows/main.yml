@@ -12,7 +12,7 @@ jobs:
             VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
             VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
             - uses: oven-sh/setup-bun@v2
               with:
                   bun-version: latest
@@ -20,7 +20,7 @@ jobs:
             - run: bun run typecheck
             - run: bun run build
             - run: touch dist/.nojekyll
-            - uses: actions/upload-pages-artifact@v3
+            - uses: actions/upload-pages-artifact@v5
               with:
                   path: dist/
     deploy:
@@ -33,5 +33,5 @@ jobs:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
         steps:
-            - uses: actions/deploy-pages@v4
+            - uses: actions/deploy-pages@v5
               id: deployment
