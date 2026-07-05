@@ -20,15 +20,12 @@ jobs:
                       echo "Supabase URL/key secrets are not configured."
                       exit 1
                   fi
-                  curl --fail --show-error --silent \
+                  curl --fail --show-error --silent --max-time 30 \
                       --retry 3 \
                       --retry-delay 5 \
                       --retry-all-errors \
-                      --get "${SUPABASE_URL%/}/rest/v1/jobs" \
-                      --data-urlencode "select=id" \
-                      --data-urlencode "limit=1" \
                       --header "apikey: ${SUPABASE_ANON_KEY}" \
-                      --header "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
-                      --header "Accept: application/json" \
-                      --output /dev/null
+                      "${SUPABASE_URL%/}/auth/v1/health" \
+                      --output /tmp/health.json
+                  cat /tmp/health.json
                   echo "Supabase ping succeeded."
