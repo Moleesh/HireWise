@@ -33,7 +33,8 @@ jobs:
                       --retry-delay 5 \
                       --retry-all-errors \
                       --header "apikey: ${SUPABASE_ANON_KEY}" \
-                      "${SUPABASE_URL%/}/auth/v1/health" \
-                      --output /tmp/health.json
-                  cat /tmp/health.json
+                      --header "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+                      "${SUPABASE_URL%/}/rest/v1/jobs?select=id&limit=1" \
+                      --output /tmp/ping.json
+                  cat /tmp/ping.json
                   echo "Supabase ping succeeded."
